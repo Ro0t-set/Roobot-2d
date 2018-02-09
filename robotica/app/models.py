@@ -5,9 +5,13 @@ from django.db import models
 
 from django.utils import timezone
 
+class Nome(models.Model):
+	nome_mappa= models.CharField(default="", max_length=100)
+	def __str__(self):
+		return str(self.nome_mappa)
 
 class Punti(models.Model):
-	nome_mappa= models.CharField(default="", max_length=100)
+	nome_mappa= models.ForeignKey('Nome', blank=True, null=True)
 	nord = models.IntegerField(blank=True, null=True)
 	sud = models.IntegerField(blank=True, null=True)
 	est = models.IntegerField(blank=True, null=True)
@@ -19,7 +23,7 @@ class Punti(models.Model):
 
 
 class Mappa(models.Model):
-	nome_mappa= models.ForeignKey('Punti', blank=True, null=True)
+	nome_mappa= models.ForeignKey('Nome', blank=True, null=True)
 
 	x = models.IntegerField(blank=True, null=True)
 	y = models.IntegerField(blank=True, null=True)
@@ -33,11 +37,7 @@ class Grafico(models.Model):
 	x = models.IntegerField(blank=True, null=True)
 	y = models.IntegerField(blank=True, null=True)
 
-	nome_mappa= models.ForeignKey('Punti', blank=True, null=True)
+	nome_mappa= models.ForeignKey('Nome', blank=True, null=True)
 
 	def __str__(self):
 		return str(self.nome_mappa)
-
-
-
-

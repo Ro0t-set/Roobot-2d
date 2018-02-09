@@ -5,3 +5,19 @@
         <button type="submit" class="save btn btn-default">Crea</button>
     </form>
 {% endblock %}
+
+{%for listaMappe in listaMappe%}
+{{listaMappe}}
+<br>
+{%endfor%}
+
+<script src="Chart.js-master/src/chart.js"></script>
+
+<script>
+var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: options
+});
+
+</script>

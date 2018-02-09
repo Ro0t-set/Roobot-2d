@@ -1,4 +1,4 @@
-from .models import Punti, Mappa, Grafico
+from .models import Punti, Mappa, Grafico, Nome
 from django.shortcuts import render
 from django.shortcuts import render
 from django.utils import timezone
@@ -7,6 +7,7 @@ from .forms import MappaForm, AmpiezzaForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
@@ -62,8 +63,10 @@ def grafici (request):
         form = MappaForm()
         ampiezza= AmpiezzaForm()
 
+    listaMappe= Nome.objects.all()
 
 
 
 
-    return render(request, 'grafici.html', {'form':form, 'ampiezza':ampiezza })
+
+    return render(request, 'grafici.html', {'form':form, 'ampiezza':ampiezza, 'listaMappe': listaMappe })
