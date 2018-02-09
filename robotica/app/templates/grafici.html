@@ -1,0 +1,7 @@
+{% block content %}
+    <h1>Robot</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }} {{ampiezza}}
+        <button type="submit" class="save btn btn-default">Crea</button>
+    </form>
+{% endblock %}
