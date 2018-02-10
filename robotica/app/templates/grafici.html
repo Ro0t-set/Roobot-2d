@@ -1,23 +1,31 @@
-{% block content %}
-    <h1>Robot</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }} {{ampiezza}}
-        <button type="submit" class="save btn btn-default">Crea</button>
-    </form>
-{% endblock %}
 
-{%for listaMappe in listaMappe%}
-{{listaMappe}}
-<br>
-{%endfor%}
-
+<html>
+<head>
+</head>
 <script src="Chart.js-master/src/chart.js"></script>
 
 <script>
 var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: options
+  type: 'line',
+  data: data,
+  options: options
 });
-
 </script>
+
+</head>
+
+<body>
+  {% block content %}
+      <h1>Robot</h1>
+      <form method="POST" class="post-form">{% csrf_token %}
+          {{ form.as_p }} {{ampiezza}}
+          <button type="submit" class="save btn btn-default">Crea</button>
+        </form>
+        {% endblock %}
+
+        {%for listaMappe in listaMappe%}
+        {{listaMappe}}
+        <br>
+        {%endfor%}
+</body>
+</html>
