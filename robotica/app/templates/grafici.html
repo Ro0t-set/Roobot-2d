@@ -1,12 +1,15 @@
 <!doctype html>
+  {% load staticfiles %}
 <html>
 
 
   <head>
 
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="../../static/bootstrap-4.0.0-dist/css" rel="stylesheet">
+
+            <link rel="stylesheet" href="{% static 'bootstrap-4.0.0-dist/css/bootstrap.css' %}">
 
   </head>
 
@@ -16,7 +19,7 @@
         <h1>Robot</h1>
         <form method="POST" class="post-form">{% csrf_token %}
             {{ form.as_p }} {{ampiezza}}
-            <button type="submit" class="save btn btn-default">Crea</button>
+            <button type="submit" class="post-form">Crea</button>
           </form>
           {% endblock %}
 
@@ -24,16 +27,7 @@
           {{listaMappe}}
           <br>
           {%endfor%}
-          <!--script spostati-->
-          <script src="Chart.js-master/src/chart.js"></script>
 
-          <script>
-          var myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: options
-          });
-        </script>
 
     </body>
 
