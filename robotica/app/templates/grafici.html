@@ -1,31 +1,41 @@
-
+<!doctype html>
 <html>
-<head>
-</head>
-<script src="Chart.js-master/src/chart.js"></script>
 
-<script>
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: data,
-  options: options
-});
-</script>
 
-</head>
+  <head>
 
-<body>
-  {% block content %}
-      <h1>Robot</h1>
-      <form method="POST" class="post-form">{% csrf_token %}
-          {{ form.as_p }} {{ampiezza}}
-          <button type="submit" class="save btn btn-default">Crea</button>
-        </form>
-        {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-        {%for listaMappe in listaMappe%}
-        {{listaMappe}}
-        <br>
-        {%endfor%}
-</body>
+
+  </head>
+
+  <body>
+
+    {% block content %}
+        <h1>Robot</h1>
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }} {{ampiezza}}
+            <button type="submit" class="save btn btn-default">Crea</button>
+          </form>
+          {% endblock %}
+
+          {%for listaMappe in listaMappe%}
+          {{listaMappe}}
+          <br>
+          {%endfor%}
+          <!--script spostati-->
+          <script src="Chart.js-master/src/chart.js"></script>
+
+          <script>
+          var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+          });
+        </script>
+
+    </body>
+
+
 </html>
