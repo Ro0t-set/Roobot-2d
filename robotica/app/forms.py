@@ -12,3 +12,6 @@ class MappaForm(forms.ModelForm):
 
 class AmpiezzaForm(forms.Form):
     ampiezza = forms.IntegerField()
+    widgets = {
+            'ampiezza': forms.TextInput(attrs={'class': 'form-control'}),
+        }
