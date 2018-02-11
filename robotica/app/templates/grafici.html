@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
             <link rel="stylesheet" href="{% static 'bootstrap-4.0.0-dist/css/bootstrap.css' %}">
-            <link rel="stylesheet" type="text/css" href="templates/grafici.css">
+            <link rel="stylesheet" href="{% static 'grafici.css' %}">
 
   </head>
 
@@ -17,7 +17,7 @@
 
     {% block content %}
     <div>
-        <h1 style="text-align:center;margin-top:25px" class=>Robot</h1>
+        <h1 class="pageTitle">Robot</h1>
     </div>
 
     <div class="container">
@@ -25,7 +25,7 @@
       <div class="col-sm">
 
         <form method="POST" class="post-form">{% csrf_token %}
-          <div class="row" style="margin-top:100px;">
+          <div class="row formPrincipale">
             <div class="col">
 
               {{ form.as_p }}
@@ -40,7 +40,7 @@
             <br>
             <div class="col">
 
-              <button type="submit" class="post-form" style="margin-left:100px">Crea</button>
+              <button type="submit" class="post-form bottone">Crea</button>
 
             </div>
 
@@ -50,11 +50,11 @@
           {% endblock %}
       </div>
 
-      <h6 style="margin-top:60px;">Mappe:</h6>
+      <h6>Mappe:</h6>
 
       <div class="row">
           {%for listaMappe in listaMappe%}
-          <div class="col" style="margin-top: 20px;">
+          <div class="col listaMappe">
             <p>{{listaMappe}}</p>
           </div>
         <br>
