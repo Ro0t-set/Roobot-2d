@@ -44,20 +44,20 @@
         <form method="POST" class="post-form">{% csrf_token %}
           <div class="row formPrincipale">
             <div class="col">
-
-              {{ form.as_p }}
-
+              <fieldset class="form-control">
+                {{ form.as_p }}
+              </fieldset>
+            </div>
+            <br>
+            <div class="col">
+              <fieldset class="form-control">
+                {{ampiezza}}
+              </fieldset>
             </div>
             <br>
             <div class="col">
 
-              {{ampiezza}}
-
-            </div>
-            <br>
-            <div class="col">
-
-              <button type="submit" class="bottone btn-primary">Crea</button>
+              <button type="submit" class="bottone btn btn-primary">Crea</button>
 
             </div>
 
