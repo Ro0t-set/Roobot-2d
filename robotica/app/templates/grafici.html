@@ -37,13 +37,14 @@
     {% if messages %}
     <br>
     <center>
-        <div class="alert alert-success col-6" role="alert">
+        <div class="alert alert-success col-3" role="alert" id="messages">
     <ul class="messages">
         {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {{ message }}  <button class="bottone btn btn-secondary" onclick="messages.style.display='none';">X</button>
         {% endfor %}
     </ul>
     </div>
+
     <center>
     {% endif %}
 
