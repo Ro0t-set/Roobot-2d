@@ -33,6 +33,20 @@
   <body style="background-image: url({% static 'resources/gradientLinear.png' %}); background-repeat: no-repeat;">
 
     {% block content %}
+
+    {% if messages %}
+    <br>
+    <center>
+        <div class="alert alert-success col-6" role="alert">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+    <center>
+    {% endif %}
+
         <div>
         <h1 class="pageTitle">Robot</h1>
     </div>

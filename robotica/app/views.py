@@ -40,6 +40,7 @@ def grafici (request):
 
 
     if request.method == "POST":
+        messages.success(request, 'Griglia Creata Con Successo.')
         ampiezzaInt=int(request.POST.get("ampiezza"))
 
 
