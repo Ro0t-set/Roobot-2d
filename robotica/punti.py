@@ -14,6 +14,12 @@ if name == "main":
 
 Puntini.objects.create(nord=nord, sud=sud, est=est, overt=overt)
 
+arrayOfPunti = list()
+
+def getPuntiFromRadar(arrayOfPuntini):
+    arrayOfPunti = initCorSystemFromDistances(arrayOfPuntini)
+    print(arrayOfPunti)
+
 # While (cas(x,y) = 0):
 #  cas(x,y) = 1
 #

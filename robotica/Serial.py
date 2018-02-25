@@ -1,13 +1,13 @@
 import serial
 import time
 
-
+import punti
 
 ser = serial.Serial ('/dev/ttyACM0',)
 ser.baudrate = 115200
 ser.close()
 
-print ('Using SerialPort:') 
+print ('Using SerialPort:')
 print (ser.name)
 ser.open()
 read = ser.readline()
@@ -60,9 +60,4 @@ print (read10)
 
 print (read11)
 
-
-
-
-
-
-
+punti.getPuntiFromRadar([read, read1, read2, read3, read4, read5, read6, read7, read8, read9, read10, read11)
