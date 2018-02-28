@@ -1,7 +1,7 @@
 import serial
 import time
 
-
+#'/dev/x': la x va campiata in base al proprio dispositivo e verificando la po
 
 ser = serial.Serial ('/dev/cu.usbmodem14321',)
 ser.baudrate = 115200
@@ -10,6 +10,10 @@ ser.close()
 print ('Using SerialPort:') 
 print (ser.name)
 ser.open()
+
+
+#i dati dai sensori si alternano: i pari vanno sono Sensore1 e i dispari Sensore2
+
 read0 = ser.readline()
 read1 = ser.readline()
 read2 = ser.readline()
@@ -46,6 +50,10 @@ read32 = ser.readline()
 read33 = ser.readline()
 read34 = ser.readline()
 read35 = ser.readline()
+
+
+
+
 
 
 ser.close()
@@ -87,6 +95,5 @@ ser.close()
 # print (read34)
 # print (read35)
 print ("Mapping ended!")
-
 
 

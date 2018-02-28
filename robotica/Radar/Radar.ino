@@ -67,11 +67,11 @@ void loop() {
 
 }
 void Mappa(){
-   Serial.print("Sensore1:");
+ 
    Serial.println(Distance0);
-   Serial.print("Sensore2:");
+  
    Serial.println(Distance1);
-   Serial.println("------");
+
    delay(700);
 }  
 void sensori(){
