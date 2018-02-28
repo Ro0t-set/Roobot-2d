@@ -13,13 +13,10 @@ def distance():
 		distance=eval(distance)
 		a=int(a)
 		x = int(math.cos(angle)*distance)
+		y = int(math.sin(angle)*distance)
 		print (x)
-		angle += (math.pi*2)/ 36.0
-		a= a+1
-		
+		print (y)
+		a=a+1
+		angle += (math.pi*2)/35
 
 distance()
-
-# def getYCorFromDistance(distance):
-#     y = Int(sin(12)*distance)
-#     return y
