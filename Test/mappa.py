@@ -1,4 +1,4 @@
-import TestSerial
+import TestSeril
 import math 
 import os
 
@@ -8,20 +8,18 @@ def distance():
 	while a<36:
 		a=str(a)
 		distance="read"+a
-		distance="Serial."+distance
+		distance="TestSeril."+distance
 		distance=eval(distance)
 		a=int(a)
 		angle=10*a
+		x = int(math.cos(angle)*distance)
+		print (x)
 		a=a+1
 
-		
-
-def getXCorFromDistance(distance):
-	x = Int(cos(distance.angle)*distance.distance)
-	print (x)
+distance()
 
 # def getYCorFromDistance(distance):
 #     y = Int(sin(12)*distance)
 #     return y
 
-getXCorFromDistance()
+
