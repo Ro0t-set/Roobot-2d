@@ -12,3 +12,6 @@ robotica/app/__pycache__/forms.cpython-36.pyc
 *.pyc
 robotica/app/__pycache__/admin.cpython-36.pyc
 *.pyc
+Test/rad.py
+Test/rad.py
+robotica/grafici.py
