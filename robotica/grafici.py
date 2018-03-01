@@ -11,16 +11,16 @@ if __name__ == "__main__":
 
 import math
 import string
-from app.models import Grafico
+from app.models import Mappa
 from django.shortcuts import get_object_or_404
+nome_mappa=3
 
-x= (list(Grafico.objects.all().values_list('x', flat=True)))
+x= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=6).values_list('x', flat=True)))
 print(x)
 
-y= (list(Grafico.objects.all().values_list('y', flat=True)))
+y= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=6).values_list('y', flat=True)))
 print(y)
 
 plt.plot(x, y, 's')
-
-plt.axis([-1000, 1000, 1000, -1000])
+plt.axis([-20, 20, 20, -20])
 plt.show()
