@@ -60,6 +60,53 @@ def grafici (request):
                     mappa.save()
 
 
+        for y in range(ampiezzaInt):
+            for x in range(ampiezzaInt):
+
+                form = MappaForm(request.POST)
+
+                if form.is_valid():
+
+
+
+                    mappa = form.save(commit=False)
+                    mappa.x= -x
+                    mappa.y= -y
+                    mappa.save()
+
+        for y in range(ampiezzaInt):
+            for x in range(ampiezzaInt):
+
+                form = MappaForm(request.POST)
+
+                if form.is_valid():
+
+
+
+                    mappa = form.save(commit=False)
+                    mappa.x= x
+                    mappa.y= -y
+                    mappa.save()
+
+                    
+
+        for y in range(ampiezzaInt):
+            for x in range(ampiezzaInt):
+
+                form = MappaForm(request.POST)
+
+                if form.is_valid():
+
+
+
+                    mappa = form.save(commit=False)
+                    mappa.x= -x
+                    mappa.y= y
+                    mappa.save()
+
+
+
+
     else:
         form = MappaForm()
         ampiezza= AmpiezzaForm()

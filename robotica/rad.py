@@ -32,8 +32,8 @@ def distance():
 		print (y)
 		a= a+1
 		try:
-			quadrato=Mappa.objects.get(x=x, y=y)
-			
+			quadrato=Mappa.objects.filter(x=x, y=y)
+
 			print(quadrato)
 		except:
 			pass
@@ -41,6 +41,7 @@ def distance():
 
 
 distance()
+
 # def getYCorFromDistance(distance):
 #     y = Int(sin(12)*distance)
 #     return y
