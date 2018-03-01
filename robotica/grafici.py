@@ -1,8 +1,6 @@
-#!/usr/bin/env python
 import matplotlib.pyplot as plt
 import os
 import sys
-import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "roobot.settings")
@@ -11,13 +9,18 @@ if __name__ == "__main__":
 
     execute_from_command_line(sys.argv)
 
+import math
+import string
+from app.models import Grafico
+from django.shortcuts import get_object_or_404
 
-x= (list(x.values_list('x', flat=True)))
+x= (list(Grafico.objects.all().values_list('x', flat=True)))
 print(x)
 
-y= (list(y.values_list('y', flat=True)))
+y= (list(Grafico.objects.all().values_list('y', flat=True)))
 print(y)
 
 plt.plot(x, y, 's')
-plt.axis([0, 300, 0, 300])
+
+plt.axis([-1000, 1000, 1000, -1000])
 plt.show()

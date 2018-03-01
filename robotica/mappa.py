@@ -14,10 +14,10 @@ import string
 from app.models import Mappa
 from django.shortcuts import get_object_or_404
 y=0
-while y<31:
+while y<1001:
 	y=y+1
 	x=0
-	while x<31:
+	while x<1001:
 		x=x+1
 		Mappa.objects.create(x=x, y=y)
 
