@@ -15,7 +15,7 @@ if __name__ == "__main__":
     execute_from_command_line(sys.argv)
 
 from app.models import Mappa
-
+nome_mappa =input(str("nome mappa:"))
 def distance():
 	a=0
 	angle = 0.0
@@ -32,14 +32,18 @@ def distance():
 		print (y)
 		a= a+1
 		try:
-			quadrato=Mappa.objects.filter(x=x, y=y)
+			quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=nome_mappa)
+			quadrato.aggettivo=2
+			quadrato.save()
+
 
 			print(quadrato)
 		except:
 			pass
 
 
-
+grafo=Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=2)
+print(grafo)
 distance()
 
 # def getYCorFromDistance(distance):
