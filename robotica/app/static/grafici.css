@@ -16,9 +16,17 @@ h6 {
   text-align: center;
 }
 
-body{
-   color: #9193a8;
-   background:  #141526;
+body {
+  font-family: "Inconsolata", sans-serif;
+  font-weight: 400;
+}
+
+body {
+  font-size: 19px;
+  line-height: 1.3em;
+  background: -webkit-linear-gradient(right, #1d2835, #1f2b38);
+  background: linear-gradient(right, #1d2835, #1f2b38);
+  color: #94c0dc;
 }
 
 .box{
@@ -29,20 +37,27 @@ body{
   -moz-box-shadow: 0px 0px 13px 1px rgba(184,184,120,1);
   box-shadow: 0px 0px 13px 1px rgba(184,184,120,1)
 }
-input{
-  border-style: solid;
-	font-size: 13px;
-    background-color: #141526;
-    border-color: #FFFF00;
-    color: white;
-    padding: 5px;
-    outline: inherit;
-    line-height: 1.3333333;
-    border-radius: 5px;
-    box-shadow: none;
-    margin-top: 10px;
+
+
+
+form {
+  
+  border-radius: 5px;
+  background: -webkit-linear-gradient(left, #18222d, #1a2530);
+  background: linear-gradient(left, #18222d, #1a2530);
+  box-shadow: inset 3px 3px 15px -5px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  display: block;
 }
 
-input:hover{
-	border-color: white;
-    color: #9193a8;
+
+input{
+  outline: none;
+  border: 1px solid #2980b9;
+  background: #1a2530;
+  box-shadow: inset 3px 3px 10px 0 rgba(0, 0, 0, 0.1);
+  color: white;
+  font-size: 10px 5px;rf;
+  border-radius: 5px;
+  padding: 3px;
+}

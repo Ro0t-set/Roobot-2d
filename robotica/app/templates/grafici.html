@@ -53,19 +53,18 @@
         <div class="col-sm">
 
           <form method="POST" class="post-form">{% csrf_token %}
-            <div class="form-control box">
-              <div class="row formPrincipale">
-                <div class="col-sm-4">
+            <div >
+              <div class="row">
+                <div class="col-sm">
                   {{ nome }}
                 </div>
-                <br>
-                <div class="col-sm-5">
-                  {{ampiezza}}
-                  <br>
-                </div>
-                <br>
-                <div class="col-sm-3">
 
+                <div class="col-sm">
+                  {{ampiezza}}
+
+                </div>
+
+                <div class="col-sm">
                   <button type="submit" class="bottone btn btn-secondary">Crea</button>
 
                 </div>
