@@ -12,9 +12,15 @@ class NomeForm(forms.ModelForm):
     class Meta:
         model = Nome
         fields = ('nome_mappa',)
+        widgets = {
+                'nome_mappa': forms.TextInput(attrs={'class': 'text'}),
+                }
+
+
 
 class AmpiezzaForm(forms.Form):
     ampiezza = forms.IntegerField()
+    fields = ('ampiezza')
     widgets = {
-            'ampiezza': forms.TextInput(attrs={'class': 'form-control'}),
+            'ampiezza': forms.NumberInput(attrs={'class': 'form-control text'}),
         }

@@ -30,12 +30,12 @@
 
 </head>
 
-<body style="background-image: url({% static 'resources/gradientLinear.png' %}); background-repeat: no-repeat;">
+<!--<body style="background-image: url({% static 'resources/gradientLinear.png' %}); background-repeat: no-repeat;">-->
 
   {% block content %} {% if messages %}
   <br>
   <center>
-    <div class="alert alert-success col-3" role="alert" id="messages">
+    <div class="alert alert-success col-5" role="alert" id="messages">
       <ul class="messages">
         {% for message in messages %} {{ message }} <button class="bottone btn btn-secondary" onclick="messages.style.display='none';">X</button> {% endfor %}
       </ul>
@@ -53,10 +53,10 @@
         <div class="col-sm">
 
           <form method="POST" class="post-form">{% csrf_token %}
-            <div class="form-control" style="background: linear-gradient(45deg, rgb(192,192,192), rgb(128,128,128)); border: hidden;">
+            <div class="form-control box">
               <div class="row formPrincipale">
                 <div class="col-sm-4">
-                  {{ nome.as_p }}
+                  {{ nome }}
                 </div>
                 <br>
                 <div class="col-sm-5">

@@ -15,3 +15,35 @@ h6 {
 .pageTitle {
   text-align: center;
 }
+
+body{
+   color: #9193a8;
+   background:  #141526;
+}
+
+.box{
+  border-color: #FFFF00;
+  border-style: 3px;
+  background:  #14122e;
+  -webkit-box-shadow: 0px 0px 13px 1px rgba(184,184,120,1);
+  -moz-box-shadow: 0px 0px 13px 1px rgba(184,184,120,1);
+  box-shadow: 0px 0px 13px 1px rgba(184,184,120,1)
+}
+.text{
+  border-style: solid;
+	font-size: 13px;
+    background-color: #141526;
+    border-color: yellow;
+    color: white;
+    padding: 5px;
+    outline: inherit;
+    line-height: 1.3333333;
+    border-radius: 4px;
+    box-shadow: none;
+    margin-top: 10px;
+}
+
+.text:hover{
+	border-color: white;
+    color: #9193a8;
+    opacity: 1;
