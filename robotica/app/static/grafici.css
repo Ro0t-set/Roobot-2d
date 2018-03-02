@@ -23,27 +23,26 @@ body{
 
 .box{
   border-color: #FFFF00;
-  border-style: 3px;
+  border-style: 1px;
   background:  #14122e;
   -webkit-box-shadow: 0px 0px 13px 1px rgba(184,184,120,1);
   -moz-box-shadow: 0px 0px 13px 1px rgba(184,184,120,1);
   box-shadow: 0px 0px 13px 1px rgba(184,184,120,1)
 }
-.text{
+input{
   border-style: solid;
 	font-size: 13px;
     background-color: #141526;
-    border-color: yellow;
+    border-color: #FFFF00;
     color: white;
     padding: 5px;
     outline: inherit;
     line-height: 1.3333333;
-    border-radius: 4px;
+    border-radius: 5px;
     box-shadow: none;
     margin-top: 10px;
 }
 
-.text:hover{
+input:hover{
 	border-color: white;
     color: #9193a8;
-    opacity: 1;
