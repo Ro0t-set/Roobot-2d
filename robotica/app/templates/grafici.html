@@ -86,31 +86,46 @@
       </div>
 
 
-      <canvas id="myChart"></canvas>
-
+      <canvas id="bubble-chart"></canvas>
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myBubbleChart = new Chart(ctx, {
-    // The type of chart we want to create
+new Chart(document.getElementById("bubble-chart"), {
     type: 'bubble',
-
-    // The data for our dataset
     data: {
-        datasets: [{
-            label: "daje",
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-        data: [{
-                x: 5,
-                y: 5
-            }]
-
-        }]
+      labels: "Grafico",
+      datasets: [
+        {
+          label: ["China"],
+          backgroundColor: "rgba(255,221,50,0.2)",
+          borderColor: "rgba(255,221,50,1)",
+          data: [{
+            x: 3,
+            y: 5,
+            r: 15
+          }]
+        },
+      ]
     },
-
-    // Configuration options go here
-    options: {}
+    options: {
+      title: {
+        display: true,
+        text: 'oggetti'
+      }, scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: "Happiness"
+          }
+        }],
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: "GDP (PPP)"
+          }
+        }]
+      }
+    }
 });
+
 </script>
 </body>
 

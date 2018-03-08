@@ -20,7 +20,7 @@ from app.models import Mappa
 nome_mappa =input(str("nome mappa:"))#selezionare l'id della mappa su cui si creerà il grafico
 def distance():
 	#loop di lettura dei dati distanze dal seriale
-	Rad90=((math.pi)*90)/180
+	Rad180=((math.pi)*180)/180
 	a=0
 	angle = 0
 	while a<36:
@@ -36,15 +36,15 @@ def distance():
 			x = int((math.cos(angleRad)*distance)/10)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
 			y = int((math.sin(angleRad)*distance)/10)
 		else:
-			x = int((math.cos(angleRad+Rad90)*distance)/10)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-			y = int((math.sin(angleRad+Rad90)*distance)/10)
+			x = int((math.cos(angleRad+Rad180)*distance)/10)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+			y = int((math.sin(angleRad+Rad180)*distance)/10)
 
 		print (x)
 		print (y)
 		a= a+1
 		try:
 			quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=nome_mappa)#filtraggio dei dati per x, y e id mappa
-			quadrato.aggettivo=11#attribuzione di un aggettivo
+			quadrato.aggettivo=12#attribuzione di un aggettivo
 			quadrato.save()#salvataggio dati in Mappa
 
 
@@ -53,7 +53,7 @@ def distance():
 			pass
 
 
-grafo=Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=11)#filtraggio dati per aggettivo(comodo per lo sviluppo)
+grafo=Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=12)#filtraggio dati per aggettivo(comodo per lo sviluppo)
 print(grafo)
 distance()
 
