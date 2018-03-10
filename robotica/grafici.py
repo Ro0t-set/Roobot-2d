@@ -15,12 +15,13 @@ from app.models import Mappa
 from django.shortcuts import get_object_or_404
 nome_mappa=3
 
-x= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=12).values_list('x', flat=True)))
+x= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=26 ).values_list('x', flat=True)))
 print(x)
 
-y= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=12).values_list('y', flat=True)))
+y= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=26).values_list('y', flat=True)))
 print(y)
 
 plt.plot(x, y, 's')
-plt.axis([-20, 20, 20, -20])
+plt.axis([-50, 50, 50, -50])
 plt.show()
+

@@ -1,7 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/python
+# -*- coding: UTF8 -*-
 
 # se si vuole usare quasto codice in test sensa i sensori sostituire tutti i "Serial" con "TestSerial"
-import TestSerial
+import Serial
 import math
 import os
 import sys
@@ -23,28 +24,28 @@ def distance():
 	Rad180=((math.pi)*180)/180
 	a=0
 	angle = 0
-	while a<36:
+	while a<24:
 		a=str(a)
 		distance="read"+a
-		distance="TestSerial."+distance
+		distance="Serial."+distance
 		distance=eval(distance)#lettura distanza
 		distance=int(distance)
 		a=int(a)
-		angle=angle+10
-		angleRad= a*(math.pi)/180#calcolo angoli motore in radianti
+		angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
 		if a%2 == 0:
-			x = int((math.cos(angleRad)*distance)/10)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-			y = int((math.sin(angleRad)*distance)/10)
+			x = int((math.cos(angleRad)*distance)/5)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+			y = int((math.sin(angleRad)*distance)/5)
 		else:
-			x = int((math.cos(angleRad+Rad180)*distance)/10)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-			y = int((math.sin(angleRad+Rad180)*distance)/10)
+			angle=angle+15
+			x = int((math.cos(angleRad+Rad180)*distance)/5)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+			y = int((math.sin(angleRad+Rad180)*distance)/5)
 
 		print (x)
 		print (y)
 		a= a+1
 		try:
 			quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=nome_mappa)#filtraggio dei dati per x, y e id mappa
-			quadrato.aggettivo=12#attribuzione di un aggettivo
+			quadrato.aggettivo=26#attribuzione di un aggettivo
 			quadrato.save()#salvataggio dati in Mappa
 
 
@@ -53,7 +54,7 @@ def distance():
 			pass
 
 
-grafo=Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=12)#filtraggio dati per aggettivo(comodo per lo sviluppo)
+grafo=Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=26)#filtraggio dati per aggettivo(comodo per lo sviluppo)
 print(grafo)
 distance()
 

@@ -3,7 +3,7 @@ import time
 
 
 
-ser = serial.Serial ('/dev/cu.usbmodem14321',)
+ser = serial.Serial ('/dev/cu.usbmodem1421',)
 ser.baudrate = 115200
 ser.close()
 
@@ -34,18 +34,6 @@ read20 = ser.readline()
 read21 = ser.readline()
 read22 = ser.readline()
 read23 = ser.readline()
-read24 = ser.readline()
-read25 = ser.readline()
-read26 = ser.readline()
-read27 = ser.readline()
-read28 = ser.readline()
-read29 = ser.readline()
-read30 = ser.readline()
-read31 = ser.readline()
-read32 = ser.readline()
-read33 = ser.readline()
-read34 = ser.readline()
-read35 = ser.readline()
 
 
 ser.close()
