@@ -35,7 +35,7 @@ void loop() {
 angolo = 0;
 while(angolo<180)
 {
-   angolo = angolo+15;
+   angolo = angolo+5;
    servomotore.write(angolo);
    sensori();
    Mappa();
