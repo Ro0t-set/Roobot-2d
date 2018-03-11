@@ -35,6 +35,7 @@ from django.http import Http404
 from django.contrib import messages
 import os
 import sys
+import math
 
 def grafici (request):
     page = request.GET.get('page')
@@ -42,8 +43,41 @@ def grafici (request):
     nome= NomeForm(request.POST)#lettura html del nome mappa
 
 
+
     if 'inizza_mappatura' in request.POST :
-        pass
+        import serial
+        Rad180=((math.pi)*180)/180
+        a=0
+        angle = 0
+        while a<24:
+        	a=str(a)
+        	distance="read"+a
+        	distance="Serial."+distance
+        	distance=eval(distance)#lettura distanza
+        	distance=int(distance)
+        	a=int(a)
+        	angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
+        	if a%2 == 0:
+        		x = int((math.cos(angleRad)*distance)/5)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+        		y = int((math.sin(angleRad)*distance)/5)
+        	else:
+        		angle=angle+15
+        		x = int((math.cos(angleRad+Rad180)*distance)/5)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+        		y = int((math.sin(angleRad+Rad180)*distance)/5)
+
+        	print (x)
+        	print (y)
+        	a= a+1
+        	try:
+        		quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=page)#filtraggio dei dati per x, y e id mappa
+        		quadrato.aggettivo=3#attribuzione di un aggettivo
+        		quadrato.save()#salvataggio dati in Mappa
+
+
+        		print(quadrato)
+        	except:
+        		pass
+
     if 'creazione_mappa' in request.POST :
         messages.success(request, 'Griglia Creata Con Successo.')  #messaggio di successo
         ampiezzaInt=int(request.POST.get("ampiezza"))  #richiesta del numero intero inserito prima all'interno dell'html
@@ -109,7 +143,6 @@ def grafici (request):
         yx=str(y[a])
         xyhtml=str(xyhtml)+str("{x:"+xy+",y:"+ yx+", r: 4},")
         a=a+1
-    print(xyhtml)
 
     paginator = Paginator(listaMappe, 1) # Show 25 contacts per page
 

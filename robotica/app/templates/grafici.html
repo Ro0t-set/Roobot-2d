@@ -33,77 +33,79 @@
 
 <!--<body style="background-image: url({% static 'resources/gradientLinear.png' %}); background-repeat: no-repeat;">-->
 
-  {% block content %}
+{% block content %}
 
 
 
-  <div class="pagination">
-      <span class="step-links">
+<div class="pagination">
+  <span class="step-links">
           {% if listaMappe.has_previous %}
               <a href="?page={{ listaMappe.previous_page_number }}">previous</a>
           {% endif %}
 
           <span class="current">
               Page {{ listaMappe.number }} of {{ listaMappe.paginator.num_pages }}.
-          </span>
+          </span> {% if listaMappe.has_next %}
+  <a href="?page={{ listaMappe.next_page_number }}">next</a> {% endif %}
+  </span>
+</div>
 
-          {% if listaMappe.has_next %}
-              <a href="?page={{ listaMappe.next_page_number }}">next</a>
-          {% endif %}
-      </span>
+</span>
+</div>
+{% if messages %}
+<br>
+<center>
+  <div class="alert alert-success col-5" role="alert" id="messages">
+    <ul class="messages">
+      {% for message in messages %} {{ message }} <button class="bottone btn btn-secondary" onclick="messages.style.display='none';">X</button> {% endfor %}
+    </ul>
   </div>
 
-    </span>
-</div>
-  {% if messages %}
-  <br>
   <center>
-    <div class="alert alert-success col-5" role="alert" id="messages">
-      <ul class="messages">
-        {% for message in messages %} {{ message }} <button class="bottone btn btn-secondary" onclick="messages.style.display='none';">X</button> {% endfor %}
-      </ul>
+    {% endif %}
+
+    <div>
+      <h1 class="pageTitle">Robot</h1>
     </div>
 
-    <center>
-      {% endif %}
+    <div class="container">
 
-      <div>
-        <h1 class="pageTitle">Robot</h1>
-      </div>
+      <div class="col-sm">
 
-      <div class="container">
+        <form method="POST" class="post-form">{% csrf_token %}
+          <div>
+            <div class="row">
+              <div class="col-sm">
+                {{ nome }}
+              </div>
 
-        <div class="col-sm">
-
-          <form method="POST" class="post-form">{% csrf_token %}
-            <div >
-              <div class="row">
-                <div class="col-sm">
-                  {{ nome }}
-                </div>
-
-                <div class="col-sm">
-                  {{ampiezza}}
-
-                </div>
-
-                <div class="col-sm">
-                  <button type="submit" name="creazione_mappa" class="bottone btn btn-secondary">Crea</button>
-
-                </div>
+              <div class="col-sm">
+                {{ampiezza}}
 
               </div>
 
-          </form>
-          {% endblock %}
-          </div>
-        </div>
+              <div class="col-sm">
+                <button type="submit" name="creazione_mappa" class="bottone btn btn-secondary">Crea</button>
 
-        <h6>Mappe:</h6> {%for listaMappe in listaMappe%}
-        <div>
-          <p>{{listaMappe}} <button type="submit" name="inizza_mappatura" class="bottone btn btn-secondary">inizzia mappaggio</button></p>
-             <canvas id="{{listaMappe}}"></canvas>
-          <script>
+              </div>
+
+            </div>
+
+        </form>
+        {% endblock %}
+        </div>
+      </div>
+
+      <h6>Mappe:</h6> {%for listaMappe in listaMappe%}
+      <div>
+        <p>{{listaMappe}}
+          <form method="POST" class="post-form">{% csrf_token %}
+            <button type="submit" name="inizza_mappatura" class="bottone btn btn-secondary">inizzia mappaggio</button>
+
+        </p>
+
+        <canvas id="{{listaMappe}}"></canvas>
+        <script>
           var popCanvas = document.getElementById("{{listaMappe}}");
 
           Chart.defaults.global.defaultFontFamily = "Lato";
@@ -113,13 +115,12 @@
             datasets: [{
               label: ['Grafo'],
 
-              data:
-                   [
+              data: [
 
 
-          {{xyhtml}}
+                {{xyhtml}}
 
-            ],
+              ],
               backgroundColor: "#9966FF",
               hoverBackgroundColor: "#000000",
               hoverBorderColor: "#9966FF",
@@ -132,16 +133,15 @@
             type: 'bubble',
             data: popData
           });
-
-          </script>
-          <br> {%endfor%}
-        </div>
-
+        </script>
+        <br> {%endfor%}
       </div>
 
+    </div>
 
+    </form>
 
-</body>
+    </body>
 
 
 </html>

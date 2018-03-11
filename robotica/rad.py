@@ -2,7 +2,7 @@
 # -*- coding: UTF8 -*-
 
 # se si vuole usare quasto codice in test sensa i sensori sostituire tutti i "Serial" con "TestSerial"
-import Serial
+import serial
 import math
 import os
 import sys
