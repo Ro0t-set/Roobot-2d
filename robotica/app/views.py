@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.forms import formset_factory
 from django.shortcuts import render_to_response
@@ -36,6 +37,7 @@ import os
 import sys
 
 def grafici (request):
+    page = request.GET.get('page')
     ampiezza= AmpiezzaForm(request.POST)#lettura html dell'ampiezza
     nome= NomeForm(request.POST)#lettura html del nome mappa
 
@@ -89,7 +91,6 @@ def grafici (request):
                     mappa.nome_mappa=nome
                     mappa.save()
 
-
     else:
         form = MappaForm()
         ampiezza= AmpiezzaForm()
@@ -97,24 +98,29 @@ def grafici (request):
 
     listaMappe= Nome.objects.all()
 
-    nome_mappa=3
-    x= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=26 ).values_list('x', flat=True)))
-    y= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=26).values_list('y', flat=True)))
+
+    x= (list(Mappa.objects.filter(nome_mappa=page, aggettivo=3 ).values_list('x', flat=True)))
+    y= (list(Mappa.objects.filter(nome_mappa=page, aggettivo=3).values_list('y', flat=True)))
 
     a=0
+    xyhtml=""
     for x in x:
         xy=str(x)
         yx=str(y[a])
-        xyhtml=str("{x:"+xy+",y:"+ yx+", r: 2},")
+        xyhtml=str(xyhtml)+str("{x:"+xy+",y:"+ yx+", r: 4},")
         a=a+1
     print(xyhtml)
 
+    paginator = Paginator(listaMappe, 1) # Show 25 contacts per page
 
-
-
-
-
-
+    try:
+        listaMappe = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        listaMappe = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        listaMappe = paginator.page(paginator.num_pages)
 
 
     return render(request, 'grafici.html', {'form':form, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml})

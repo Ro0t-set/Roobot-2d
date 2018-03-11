@@ -33,7 +33,29 @@
 
 <!--<body style="background-image: url({% static 'resources/gradientLinear.png' %}); background-repeat: no-repeat;">-->
 
-  {% block content %} {% if messages %}
+  {% block content %}
+
+
+
+  <div class="pagination">
+      <span class="step-links">
+          {% if listaMappe.has_previous %}
+              <a href="?page={{ listaMappe.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ listaMappe.number }} of {{ listaMappe.paginator.num_pages }}.
+          </span>
+
+          {% if listaMappe.has_next %}
+              <a href="?page={{ listaMappe.next_page_number }}">next</a>
+          {% endif %}
+      </span>
+  </div>
+
+    </span>
+</div>
+  {% if messages %}
   <br>
   <center>
     <div class="alert alert-success col-5" role="alert" id="messages">
@@ -80,44 +102,45 @@
         <h6>Mappe:</h6> {%for listaMappe in listaMappe%}
         <div>
           <p>{{listaMappe}} <button type="submit" name="inizza_mappatura" class="bottone btn btn-secondary">inizzia mappaggio</button></p>
+             <canvas id="{{listaMappe}}"></canvas>
+          <script>
+          var popCanvas = document.getElementById("{{listaMappe}}");
+
+          Chart.defaults.global.defaultFontFamily = "Lato";
+          Chart.defaults.global.defaultFontSize = 18;
+
+          var popData = {
+            datasets: [{
+              label: ['Grafo'],
+
+              data:
+                   [
+
+
+          {{xyhtml}}
+
+            ],
+              backgroundColor: "#9966FF",
+              hoverBackgroundColor: "#000000",
+              hoverBorderColor: "#9966FF",
+              hoverBorderWidth: 5,
+              hoverRadius: 5
+            }]
+          };
+
+          var bubbleChart = new Chart(popCanvas, {
+            type: 'bubble',
+            data: popData
+          });
+
+          </script>
           <br> {%endfor%}
         </div>
 
       </div>
 
 
-      <canvas id="popChart"></canvas>
-<script>
-var popCanvas = document.getElementById("popChart");
 
-Chart.defaults.global.defaultFontFamily = "Lato";
-Chart.defaults.global.defaultFontSize = 18;
-
-var popData = {
-  datasets: [{
-    label: ['Deer Population'],
-
-    data:
-         [
-
-
-{{xyhtml}}
-
-  ],
-    backgroundColor: "#9966FF",
-    hoverBackgroundColor: "#000000",
-    hoverBorderColor: "#9966FF",
-    hoverBorderWidth: 5,
-    hoverRadius: 5
-  }]
-};
-
-var bubbleChart = new Chart(popCanvas, {
-  type: 'bubble',
-  data: popData
-});
-
-</script>
 </body>
 
 
