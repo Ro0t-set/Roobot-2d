@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="col-sm">
-                  <button type="submit" class="bottone btn btn-secondary">Crea</button>
+                  <button type="submit" name="creazione_mappa" class="bottone btn btn-secondary">Crea</button>
 
                 </div>
 
@@ -79,51 +79,42 @@
 
         <h6>Mappe:</h6> {%for listaMappe in listaMappe%}
         <div>
-          <p>{{listaMappe}}</p>
+          <p>{{listaMappe}} <button type="submit" name="inizza_mappatura" class="bottone btn btn-secondary">inizzia mappaggio</button></p>
           <br> {%endfor%}
         </div>
 
       </div>
 
 
-      <canvas id="bubble-chart"></canvas>
+      <canvas id="popChart"></canvas>
 <script>
-new Chart(document.getElementById("bubble-chart"), {
-    type: 'bubble',
-    data: {
-      labels: "Grafico",
-      datasets: [
-        {
-          label: ["China"],
-          backgroundColor: "rgba(255,221,50,0.2)",
-          borderColor: "rgba(255,221,50,1)",
-          data: [{
-            x: 3,
-            y: 5,
-            r: 15
-          }]
-        },
-      ]
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'oggetti'
-      }, scales: {
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: "Happiness"
-          }
-        }],
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: "GDP (PPP)"
-          }
-        }]
-      }
-    }
+var popCanvas = document.getElementById("popChart");
+
+Chart.defaults.global.defaultFontFamily = "Lato";
+Chart.defaults.global.defaultFontSize = 18;
+
+var popData = {
+  datasets: [{
+    label: ['Deer Population'],
+
+    data:
+         [
+
+
+{{xyhtml}}
+
+  ],
+    backgroundColor: "#9966FF",
+    hoverBackgroundColor: "#000000",
+    hoverBorderColor: "#9966FF",
+    hoverBorderWidth: 5,
+    hoverRadius: 5
+  }]
+};
+
+var bubbleChart = new Chart(popCanvas, {
+  type: 'bubble',
+  data: popData
 });
 
 </script>

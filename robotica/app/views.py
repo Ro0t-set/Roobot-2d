@@ -40,8 +40,9 @@ def grafici (request):
     nome= NomeForm(request.POST)#lettura html del nome mappa
 
 
-
-    if request.method == "POST":
+    if 'inizza_mappatura' in request.POST :
+        pass
+    if 'creazione_mappa' in request.POST :
         messages.success(request, 'Griglia Creata Con Successo.')  #messaggio di successo
         ampiezzaInt=int(request.POST.get("ampiezza"))  #richiesta del numero intero inserito prima all'interno dell'html
         nome.nome_mappa=nome   #selezione e salvataggio nella tabella Nome del capom nome
@@ -50,7 +51,7 @@ def grafici (request):
         nome= Nome.objects.get(nome_mappa=nome)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
 
 
-#creazione di una griglia che si espande nelle 4 direzioni di un piano cartesiano con ampiezza ripetuta per ogni quadrante 
+#creazione di una griglia che si espande nelle 4 direzioni di un piano cartesiano con ampiezza ripetuta per ogni quadrante
         for y in range(ampiezzaInt):
             for x in range(ampiezzaInt):
                 form = MappaForm(request.POST)
@@ -96,8 +97,24 @@ def grafici (request):
 
     listaMappe= Nome.objects.all()
 
+    nome_mappa=3
+    x= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=26 ).values_list('x', flat=True)))
+    y= (list(Mappa.objects.filter(nome_mappa=nome_mappa, aggettivo=26).values_list('y', flat=True)))
+
+    a=0
+    for x in x:
+        xy=str(x)
+        yx=str(y[a])
+        xyhtml=str("{x:"+xy+",y:"+ yx+", r: 2},")
+        a=a+1
+    print(xyhtml)
 
 
 
 
-    return render(request, 'grafici.html', {'form':form, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome })
+
+
+
+
+
+    return render(request, 'grafici.html', {'form':form, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml})
