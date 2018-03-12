@@ -99,8 +99,11 @@
       <h6>Mappe:</h6> {%for listaMappe in listaMappe%}
       <div>
         <p>{{listaMappe}}
+          <br>
+
+
           <form method="POST" class="post-form">{% csrf_token %}
-            <button type="submit" name="inizza_mappatura" class="bottone btn btn-secondary">inizzia mappaggio</button>
+            <button type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-secondary">inizzia mappaggio</button>
 
         </p>
 
@@ -140,6 +143,8 @@
     </div>
 
     </form>
+    <br>
+    <br>
 
     </body>
 

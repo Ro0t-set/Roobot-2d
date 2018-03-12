@@ -38,11 +38,33 @@ import sys
 import math
 
 def grafici (request):
+    listaMappe= Nome.objects.all()
+    mappa=  Mappa.objects.all()
+
     page = request.GET.get('page')
+
+    paginator = Paginator(listaMappe, 1) # Show 1 contacts per page
+    try:
+        listaMappe = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        listaMappe = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        listaMappe = paginator.page(paginator.num_pages)
+
+
+    idMappa=listaMappe.object_list.values_list('id', flat=True)
+
+
+
+
+
+
     ampiezza= AmpiezzaForm(request.POST)#lettura html dell'ampiezza
     nome= NomeForm(request.POST)#lettura html del nome mappa
-
-
+    # idMappa= request.POST['mappaId']
+    # print(idMappa)
 
     if 'inizza_mappatura' in request.POST :
         import serial
@@ -69,7 +91,7 @@ def grafici (request):
         	print (y)
         	a= a+1
         	try:
-        		quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=page)#filtraggio dei dati per x, y e id mappa
+        		quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=idMappa)#filtraggio dei dati per x, y e id mappa
         		quadrato.aggettivo=3#attribuzione di un aggettivo
         		quadrato.save()#salvataggio dati in Mappa
 
@@ -130,12 +152,13 @@ def grafici (request):
         ampiezza= AmpiezzaForm()
         nome= NomeForm()
 
-    listaMappe= Nome.objects.all()
+    mappaMax = Mappa.objects.filter(nome_mappa=idMappa)
 
 
-    x= (list(Mappa.objects.filter(nome_mappa=page, aggettivo=3 ).values_list('x', flat=True)))
-    y= (list(Mappa.objects.filter(nome_mappa=page, aggettivo=3).values_list('y', flat=True)))
 
+
+    x= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3 ).values_list('x', flat=True)))
+    y= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3).values_list('y', flat=True)))
     a=0
     xyhtml=""
     for x in x:
@@ -144,16 +167,6 @@ def grafici (request):
         xyhtml=str(xyhtml)+str("{x:"+xy+",y:"+ yx+", r: 4},")
         a=a+1
 
-    paginator = Paginator(listaMappe, 1) # Show 25 contacts per page
-
-    try:
-        listaMappe = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        listaMappe = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        listaMappe = paginator.page(paginator.num_pages)
 
 
     return render(request, 'grafici.html', {'form':form, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml})
