@@ -57,6 +57,7 @@ def grafici (request):
     idMappa=listaMappe.object_list.values_list('id', flat=True)
 
 
+    mappaSingola = Mappa.objects.filter(nome_mappa=idMappa)
 
 
 
@@ -65,6 +66,11 @@ def grafici (request):
     nome= NomeForm(request.POST)#lettura html del nome mappa
     # idMappa= request.POST['mappaId']
     # print(idMappa)
+    if 'resetta_mappatura' in request.POST :
+        for mappaSingola in mappaSingola:
+            if mappaSingola.aggettivo != 1:
+                mappaSingola.aggettivo=1
+                mappaSingola.save()
 
     if 'inizza_mappatura' in request.POST :
         import serial
@@ -151,8 +157,6 @@ def grafici (request):
         form = MappaForm()
         ampiezza= AmpiezzaForm()
         nome= NomeForm()
-
-    mappaMax = Mappa.objects.filter(nome_mappa=idMappa)
 
 
 
