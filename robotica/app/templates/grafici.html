@@ -1,4 +1,4 @@
-<!doctype html> {% load staticfiles %}
+<!doctype html> {% load staticfiles %}{% block content %}
 <html>
 
 
@@ -33,25 +33,11 @@
 
 <!--<body style="background-image: url({% static 'resources/gradientLinear.png' %}); background-repeat: no-repeat;">-->
 
-{% block content %}
 
 
 
-<div class="pagination">
-  <span class="step-links">
-          {% if listaMappe.has_previous %}
-              <a href="?page={{ listaMappe.previous_page_number }}">previous</a>
-          {% endif %}
 
-          <span class="current">
-              Page {{ listaMappe.number }} of {{ listaMappe.paginator.num_pages }}.
-          </span> {% if listaMappe.has_next %}
-  <a href="?page={{ listaMappe.next_page_number }}">next</a> {% endif %}
-  </span>
-</div>
 
-</span>
-</div>
 {% if messages %}
 <br>
 <center>
@@ -64,50 +50,74 @@
   <center>
     {% endif %}
 
+
     <div>
       <h1 class="pageTitle">Robot</h1>
     </div>
 
     <div class="container">
-
       <div class="col-sm">
 
-        <form method="POST" class="post-form">{% csrf_token %}
-          <div>
-            <div class="row">
-              <div class="col-sm">
-                {{ nome }}
-              </div>
 
-              <div class="col-sm">
-                {{ampiezza}}
 
-              </div>
-
-              <div class="col-sm">
-                <button type="submit" name="creazione_mappa" class="bottone btn btn-secondary">Crea</button>
-
-              </div>
-
-            </div>
-
-        </form>
-        {% endblock %}
+<div class="collapse" id="collapseExample">
+  <form method="POST" class="post-form">{% csrf_token %}
+    <div>
+      <div class="row">
+        <div class="col-sm">
+          {{ nome }}
+        </div>
+        <div class="col-sm">
+          {{ampiezza}}
+        </div>
+        <div class="col-sm">
+          <button type="submit" name="creazione_mappa" class="bottone btn btn-secondary">Crea</button>
         </div>
       </div>
+  </form>
 
-      <h6>Mappe:</h6> {%for listaMappe in listaMappe%}
+</div>
+
+
+        </div>
+      </div>
+<br><br>
+      <div class="pagination">
+        <span class="step-links">
+                {% if listaMappe.has_previous %}
+                    <a href="?page={{ listaMappe.previous_page_number }}">Indietro</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ listaMappe.number }} of {{ listaMappe.paginator.num_pages }}.
+                </span> {% if listaMappe.has_next %}
+        <a href="?page={{ listaMappe.next_page_number }}">Avanti</a> {% endif %}
+        </span>
+      </div>
+
+
+   {%for listaMappe in listaMappe%}
       <div>
-        <p>{{listaMappe}}
+
+        <p>
           <br>
+
+</div>
+
 
 
           <form method="POST" class="post-form">{% csrf_token %}
-            <button type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-secondary">inizzia mappaggio</button>
-            <button type="submit" name="resetta_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-secondary">resetta mappa</button>
-
+            <button type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-success">inizzia mappaggio</button>
+            <button type="submit" name="resetta_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-danger">resetta mappa</button>
+            <a class="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Crea Mappa
+            </a>
         </p>
-
+    </form>
+<br>
+Info {{listaMappe}}:
+<br><br>
+    <form>
         <canvas id="{{listaMappe}}"></canvas>
         <script>
           var popCanvas = document.getElementById("{{listaMappe}}");
@@ -142,8 +152,8 @@
       </div>
 
     </div>
+</form>
 
-    </form>
     <br>
     <br>
 
@@ -151,3 +161,4 @@
 
 
 </html>
+{% endblock %}

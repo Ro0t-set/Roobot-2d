@@ -37,6 +37,7 @@ import os
 import sys
 import math
 
+
 def grafici (request):
     listaMappe= Nome.objects.all()
     mappa=  Mappa.objects.all()
