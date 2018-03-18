@@ -3,11 +3,11 @@ import time
 
 
 
-ser = serial.Serial ('/dev/cu.usbmodem1421',)
+ser = serial.Serial ('/dev/cu.usbmodem14321',)
 ser.baudrate = 115200
 ser.close()
 
-print ('Using SerialPort:') 
+print ('Using SerialPort:')
 print (ser.name)
 ser.open()
 read0 = ser.readline()
@@ -75,6 +75,3 @@ ser.close()
 # print (read34)
 # print (read35)
 print ("Mapping ended!")
-
-
-

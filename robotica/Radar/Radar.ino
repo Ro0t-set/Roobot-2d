@@ -11,8 +11,6 @@ int Mseconds0 = 0;
 int Mseconds1 = 0;
 int Distance0 = 0;
 int Distance1 = 0; 
-int angolo;
-
 
 NewPing sonar0(TRIGGER_PIN0, ECHO_PIN0, MAX_DISTANCE); //Oggetto sonar 1
 NewPing sonar1(TRIGGER_PIN1, ECHO_PIN1, MAX_DISTANCE); //Oggetto sonar 2
@@ -22,31 +20,59 @@ Servo servomotore;
 void setup(){
 Serial.begin (115200); //Comunicazione seriale 115200 bit
 servomotore.attach(3);
-pinMode(2,OUTPUT);
-pinMode(12,OUTPUT);
-digitalWrite(2,HIGH);
-digitalWrite(12,HIGH);
 servomotore.write(180);
 }
 /*Il loop comprende due funzioni; sensori e Mappa, attivate ogni 15 gradi di movimento del servomotore, 
 sensori rileva le distanze, Mappa invia i valori al seriale, ogni ciclo del radar produce 24 valori in centimetri*/
 void loop() {
-  
-angolo = 0;
-while(angolo<180)
-{
-   angolo = angolo+5;
-   servomotore.write(angolo);
+
+   sensori();        
+   servomotore.write(180);
    sensori();
    Mappa();
-}
-       
-  
+   servomotore.write(165);
+   sensori();
+   Mappa();
+   servomotore.write(150);
+   sensori();
+   Mappa();
+   servomotore.write(135);
+   sensori();
+   Mappa();
+   servomotore.write(120);
+   sensori();
+   Mappa();
+   servomotore.write(105);
+   sensori();
+   Mappa();
+   servomotore.write(90);
+   sensori();
+   Mappa();
+   servomotore.write(75);
+   sensori();
+   Mappa();
+   servomotore.write(60);
+   sensori();
+   Mappa();
+   servomotore.write(45);
+   sensori();
+   Mappa();
+   servomotore.write(30);
+   sensori();
+   Mappa();
+   servomotore.write(15);
+   sensori();
+   Mappa();
+   servomotore.write(180);
+
 }
 void Mappa(){
+
    Serial.println(Distance0);
+
    Serial.println(Distance1);
-   delay(100);
+
+   delay(700);
 }  
 void sensori(){
    Mseconds0 = sonar0.ping_median(5);
