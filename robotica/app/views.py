@@ -36,6 +36,7 @@ from django.contrib import messages
 import os
 import sys
 import math
+import importlib
 
 
 def grafici (request):
@@ -78,36 +79,33 @@ def grafici (request):
         Rad180=((math.pi)*180)/180
         a=0
         angle = 0
-        while a<72:
+        while a<35:
             a=str(a)
             distance="read"+a
             distance="Serial."+distance
             distance=eval(distance)#lettura distanza
             distance=int(distance)
-            print(distance)
             a=int(a)
             angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
             if a%2 == 0:
-                x = int((math.cos(angleRad)*distance/20))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad)*distance)/20)
+                x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                y = int((math.sin(angleRad)*distance))
             else:
-                angle=angle+5
-                x = int((math.cos(angleRad+Rad180)*distance)/20)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad+Rad180)*distance)/20)
+                angle=angle+15
+                x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                y = int((math.sin(angleRad+Rad180)*distance))
 
-            print (x)
-            print (y)
-            distance=None
+
+
             a= a+1
             try:
                 quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=idMappa)#filtraggio dei dati per x, y e id mappa
                 quadrato.aggettivo=3#attribuzione di un aggettivo
                 quadrato.save()#salvataggio dati in Mappa
 
-
-                print(quadrato)
             except:
                 pass
+            Serial = importlib.reload(Serial)
 
     if 'creazione_mappa' in request.POST :
         messages.success(request, 'Griglia Creata Con Successo.')  #messaggio di successo
@@ -119,8 +117,8 @@ def grafici (request):
 
 
 #creazione di una griglia che si espande nelle 4 direzioni di un piano cartesiano con ampiezza ripetuta per ogni quadrante
-        for y in range(ampiezzaInt):
-            for x in range(ampiezzaInt):
+        for y in range(0, ampiezzaInt):
+            for x in range(0, ampiezzaInt):
                 form = MappaForm(request.POST)
                 if form.is_valid():
                     mappa = form.save(commit=False)
@@ -128,8 +126,8 @@ def grafici (request):
                     mappa.y= y
                     mappa.nome_mappa=nome
                     mappa.save()
-        for y in range(ampiezzaInt):
-            for x in range(ampiezzaInt):
+        for y in range(0, ampiezzaInt):
+            for x in range(0, ampiezzaInt):
                 form = MappaForm(request.POST)
                 if form.is_valid():
                     mappa = form.save(commit=False)
@@ -137,8 +135,8 @@ def grafici (request):
                     mappa.y= -y
                     mappa.nome_mappa=nome
                     mappa.save()
-        for y in range(ampiezzaInt):
-            for x in range(ampiezzaInt):
+        for y in range(0, ampiezzaInt):
+            for x in range(0, ampiezzaInt):
                 form = MappaForm(request.POST)
                 if form.is_valid():
                     mappa = form.save(commit=False)
@@ -146,8 +144,8 @@ def grafici (request):
                     mappa.y= -y
                     mappa.nome_mappa=nome
                     mappa.save()
-        for y in range(ampiezzaInt):
-            for x in range(ampiezzaInt):
+        for y in range(0, ampiezzaInt):
+            for x in range(0, ampiezzaInt):
                 form = MappaForm(request.POST)
                 if form.is_valid():
                     mappa = form.save(commit=False)
