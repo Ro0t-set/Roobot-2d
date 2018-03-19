@@ -79,7 +79,7 @@ def grafici (request):
         Rad180=((math.pi)*180)/180
         a=0
         angle = 0
-        while a<35:
+        while a<72:
             a=str(a)
             distance="read"+a
             distance="Serial."+distance
@@ -91,7 +91,7 @@ def grafici (request):
                 x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
                 y = int((math.sin(angleRad)*distance))
             else:
-                angle=angle+15
+                angle=angle+5
                 x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
                 y = int((math.sin(angleRad+Rad180)*distance))
 
