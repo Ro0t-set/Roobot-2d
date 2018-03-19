@@ -20,8 +20,6 @@ from django.template import RequestContext
 from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import render_to_string, get_template
-from django.core.mail import EmailMessage
-from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -37,6 +35,7 @@ import os
 import sys
 import math
 import importlib
+import Serial
 
 
 def grafici (request):
@@ -75,7 +74,7 @@ def grafici (request):
                 mappaSingola.save()
 
     if 'inizza_mappatura' in request.POST :
-        import Serial
+        Serial = importlib.reload(Serial)
         Rad180=((math.pi)*180)/180
         a=0
         angle = 0
@@ -105,7 +104,7 @@ def grafici (request):
 
             except:
                 pass
-            Serial = importlib.reload(Serial)
+
 
     if 'creazione_mappa' in request.POST :
         messages.success(request, 'Griglia Creata Con Successo.')  #messaggio di successo
