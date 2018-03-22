@@ -78,7 +78,7 @@ def grafici (request):
         Rad180=((math.pi)*180)/180
         a=0
         angle = 0
-        while a<72:
+        while a<32:
             a=str(a)
             distance="read"+a
             distance="Serial."+distance
@@ -158,7 +158,7 @@ def grafici (request):
         ampiezza= AmpiezzaForm()
         nome= NomeForm()
 
-
+    scalo=1
 
 
     x= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3 ).values_list('x', flat=True)))
@@ -166,9 +166,12 @@ def grafici (request):
     a=0
     xyhtml=""
     for x in x:
-        xy=str(x)
+        xy=int(x/scalo)
+        xy=str(xy)
+        yx=int(y[a])
+        yx=yx/scalo
         yx=str(y[a])
-        xyhtml=str(xyhtml)+str("{x:"+xy+",y:"+ yx+", r: 4},")
+        xyhtml=str(xyhtml)+str("{x:"+(xy)+",y:"+ (yx)+", r: 4},")
         a=a+1
 
 
