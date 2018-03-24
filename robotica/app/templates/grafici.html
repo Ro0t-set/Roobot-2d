@@ -118,16 +118,20 @@
 Info {{listaMappe}}:
 <br><br>
     <form>
-        <canvas id="{{listaMappe}}" style="height: 300px; width: 300px"></canvas>
+        <canvas id="{{listaMappe}}" style="height: 300px; width: 300px;"></canvas>
         <script>
           var popCanvas = document.getElementById("{{listaMappe}}");
 
-          Chart.defaults.global.defaultFontFamily = "Lato";
+
           Chart.defaults.global.defaultFontSize = 18;
+          Chart.defaults.global.elements.point.pointStyle='rect';
+
+
 
           var popData = {
             datasets: [{
               label: ['Grafo'],
+
 
               data: [
 
@@ -141,11 +145,20 @@ Info {{listaMappe}}:
               hoverBorderWidth: 5,
               hoverRadius: 5
             }]
+
+
           };
+
+
+
+
+
 
           var bubbleChart = new Chart(popCanvas, {
             type: 'bubble',
             data: popData
+
+
           });
         </script>
         <br> {%endfor%}

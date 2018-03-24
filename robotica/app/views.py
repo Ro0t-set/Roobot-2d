@@ -36,6 +36,8 @@ import sys
 import math
 import importlib
 import Serial
+import threading
+from queue import Queue
 
 
 def grafici (request):
@@ -56,54 +58,53 @@ def grafici (request):
 
 
     idMappa=listaMappe.object_list.values_list('id', flat=True)
-
-
     mappaSingola = Mappa.objects.filter(nome_mappa=idMappa)
-
-
 
 
     ampiezza= AmpiezzaForm(request.POST)#lettura html dell'ampiezza
     nome= NomeForm(request.POST)#lettura html del nome mappa
-    # idMappa= request.POST['mappaId']
+    #idMappa= request.POST['mappaId']
     # print(idMappa)
     if 'resetta_mappatura' in request.POST :
+        print_lock = threading.Lock()
+        q= Queue()
         for mappaSingola in mappaSingola:
             if mappaSingola.aggettivo != 1:
-                mappaSingola.aggettivo=1
-                mappaSingola.save()
+               mappaSingola.delete()
+
 
     if 'inizza_mappatura' in request.POST :
-        Serial = importlib.reload(Serial)
-        Rad180=((math.pi)*180)/180
+        SerialReload = importlib.reload(Serial)
+        Rad180=math.pi
         a=0
         angle = 0
-        while a<32:
+        nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
+        print(nome)
+        print("...............")
+        while a<71:
             a=str(a)
             distance="read"+a
             distance="Serial."+distance
             distance=eval(distance)#lettura distanza
             distance=int(distance)
+            print(distance)
             a=int(a)
             angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
             if a%2 == 0:
                 x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
                 y = int((math.sin(angleRad)*distance))
             else:
-                angle=angle+5
                 x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
                 y = int((math.sin(angleRad+Rad180)*distance))
+                angle=angle+5
 
+            print(mappaSingola)
 
-
+            Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
             a= a+1
-            try:
-                quadrato=Mappa.objects.get(x=x, y=y, nome_mappa=idMappa)#filtraggio dei dati per x, y e id mappa
-                quadrato.aggettivo=3#attribuzione di un aggettivo
-                quadrato.save()#salvataggio dati in Mappa
 
-            except:
-                pass
+
+
 
 
     if 'creazione_mappa' in request.POST :
