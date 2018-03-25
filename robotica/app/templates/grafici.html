@@ -127,6 +127,13 @@ Info {{listaMappe}}:
 
           Chart.defaults.global.defaultFontSize = 18;
           Chart.defaults.global.elements.point.pointStyle='rect';
+          Chart.scaleService.updateScaleDefaults('linear', { #ho aggiunto qua un po di roba
+            ticks: {
+              min: -100,
+              max: 100,
+              stepSize: 10
+            }
+          });
 
 
 
@@ -159,8 +166,6 @@ Info {{listaMappe}}:
           var bubbleChart = new Chart(popCanvas, {
             type: 'bubble',
             data: popData
-
-
           });
         </script>
         <br> {%endfor%}
