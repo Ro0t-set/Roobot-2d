@@ -87,22 +87,17 @@ def grafici (request):
             distance="RandomSerial."+distance
             distance=eval(distance)#lettura distanza
             distance=int(distance)
-            if distance>100:
-                a= a+1
-                angle=angle+5
+            a=int(a)
+            angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
+            if a%2 == 0:
+                x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                y = int((math.sin(angleRad)*distance))
             else:
-                print(distance)
-                a=int(a)
-                angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
-                if a%2 == 0:
-                    x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                    y = int((math.sin(angleRad)*distance))
-                else:
-                    x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                    y = int((math.sin(angleRad+Rad180)*distance))
-                    angle=angle+5
-
-                Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
+                x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                y = int((math.sin(angleRad+Rad180)*distance))
+                angle=angle+5
+                if distance<100:
+                    Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
                 a= a+1
 
 
