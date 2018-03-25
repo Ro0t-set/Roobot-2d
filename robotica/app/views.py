@@ -35,7 +35,7 @@ import os
 import sys
 import math
 import importlib
-import Serial
+import RandomSerial
 import threading
 from queue import Queue
 
@@ -74,34 +74,36 @@ def grafici (request):
 
 
     if 'inizza_mappatura' in request.POST :
-        SerialReload = importlib.reload(Serial)
+        SerialReload = importlib.reload(RandomSerial)
         Rad180=math.pi
         a=0
         angle = 0
         nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
         print(nome)
         print("...............")
-        while a<71:
+        while a<72:
             a=str(a)
             distance="read"+a
-            distance="Serial."+distance
+            distance="RandomSerial."+distance
             distance=eval(distance)#lettura distanza
             distance=int(distance)
-            print(distance)
-            a=int(a)
-            angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
-            if a%2 == 0:
-                x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad)*distance))
-            else:
-                x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad+Rad180)*distance))
+            if distance>100:
+                a= a+1
                 angle=angle+5
+            else:
+                print(distance)
+                a=int(a)
+                angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
+                if a%2 == 0:
+                    x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                    y = int((math.sin(angleRad)*distance))
+                else:
+                    x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                    y = int((math.sin(angleRad+Rad180)*distance))
+                    angle=angle+5
 
-            print(mappaSingola)
-
-            Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
-            a= a+1
+                Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
+                a= a+1
 
 
 
