@@ -35,7 +35,7 @@ import os
 import sys
 import math
 import importlib
-import RandomSerial
+import Serial
 import threading
 from queue import Queue
 
@@ -74,17 +74,17 @@ def grafici (request):
 
 
     if 'inizza_mappatura' in request.POST :
-        SerialReload = importlib.reload(RandomSerial)
+        SerialReload = importlib.reload(Serial)
         Rad180=math.pi
         a=0
         angle = 0
         nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
-        print(nome)
+     
         print("...............")
         while a<72:
             a=str(a)
             distance="read"+a
-            distance="RandomSerial."+distance
+            distance="Serial."+distance
             distance=eval(distance)#lettura distanza
             distance=int(distance)
             a=int(a)
