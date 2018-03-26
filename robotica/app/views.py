@@ -79,7 +79,7 @@ def grafici (request):
         a=0
         angle = 0
         nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
-     
+
         print("...............")
         while a<72:
             a=str(a)
@@ -96,9 +96,9 @@ def grafici (request):
                 x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
                 y = int((math.sin(angleRad+Rad180)*distance))
                 angle=angle+5
-                if distance<100:
-                    Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
-                a= a+1
+            if distance<100:
+                Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
+            a= a+1
 
 
 
