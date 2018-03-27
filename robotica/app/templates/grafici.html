@@ -68,7 +68,6 @@
           {{ nome }}
         </div>
         <div class="col-sm">
-          {{ampiezza}}
         </div>
         <div class="col-sm">
           <button type="submit" name="creazione_mappa" class="bottone btn btn-secondary">Crea</button>
@@ -107,7 +106,7 @@
 
 
           <form method="POST" class="post-form">{% csrf_token %}
-            <button type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-success">inizzia mappaggio</button>
+            <button onclick="loading.style.display='block';" type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-success">inizzia mappaggio</button>
             <button type="submit" name="resetta_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-danger">resetta mappa</button>
             <a class="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             Crea Mappa
@@ -180,6 +179,10 @@ Info {{listaMappe}}:
 
     <br>
     <br>
+
+
+
+
 
     </body>
 

@@ -35,9 +35,10 @@ import os
 import sys
 import math
 import importlib
-import Serial
+import RandomSerial
 import threading
 from queue import Queue
+import time
 
 
 def grafici (request):
@@ -74,31 +75,57 @@ def grafici (request):
 
 
     if 'inizza_mappatura' in request.POST :
-        SerialReload = importlib.reload(Serial)
+        nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
+        spostamentoX=0
+        spostamentoY=0
+
+
+        Reload = importlib.reload(Serial)
         Rad180=math.pi
         a=0
         angle = 0
-        nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
-
-        print("...............")
         while a<72:
             a=str(a)
             distance="read"+a
             distance="Serial."+distance
             distance=eval(distance)#lettura distanza
             distance=int(distance)
+            print("...............")
+            print(distance)
             a=int(a)
             angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
             if a%2 == 0:
-                x = int((math.cos(angleRad)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad)*distance))
+                x = int((math.cos(angleRad)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                y = int((math.sin(angleRad)*distance)+spostamentoY)
             else:
-                x = int((math.cos(angleRad+Rad180)*distance))#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad+Rad180)*distance))
+                x = int((math.cos(angleRad+Rad180)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                y = int((math.sin(angleRad+Rad180)*distance)+spostamentoY)
                 angle=angle+5
             if distance<100:
                 Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
+
             a= a+1
+
+        distanzaMaxList=[Serial.read0,Serial.read1,Serial.read36,Serial.read37]
+
+        distanceMax=max(distanzaMaxList)
+        print("distanza massima:",distanceMax)
+        if distanceMax==Serial.read0:
+            spostamentoX=spostamentoX+(int(distanceMax/2))
+            print("avanti")
+        elif distanceMax==Serial.read1:
+            spostamentoX=spostamentoX-(int(distanceMax/2))
+            print("indietro")
+        elif distanceMax==Serial.read32:
+            spostamentoY=spostamentoY+(int(distanceMax/2))
+            print("destra")
+        elif distanceMax==Serial.read30:
+            spostamentoY=spostamentoY-(int(distanceMax/2))
+            print("sinistra")
+        print("spostamento x:",spostamentoX)
+        print("spostamento y:",spostamentoY)
+
+
 
 
 
@@ -106,7 +133,7 @@ def grafici (request):
 
     if 'creazione_mappa' in request.POST :
         messages.success(request, 'Griglia Creata Con Successo.')  #messaggio di successo
-        ampiezzaInt=int(request.POST.get("ampiezza"))  #richiesta del numero intero inserito prima all'interno dell'html
+        # ampiezzaInt=int(request.POST.get("ampiezza"))  #richiesta del numero intero inserito prima all'interno dell'html
         nome.nome_mappa=nome   #selezione e salvataggio nella tabella Nome del capom nome
         nome.save()
         nome=(request.POST.get("nome_mappa")) #estrapolazione del nome dall'html
@@ -114,42 +141,42 @@ def grafici (request):
 
 
 #creazione di una griglia che si espande nelle 4 direzioni di un piano cartesiano con ampiezza ripetuta per ogni quadrante
-        for y in range(0, ampiezzaInt):
-            for x in range(0, ampiezzaInt):
-                form = MappaForm(request.POST)
-                if form.is_valid():
-                    mappa = form.save(commit=False)
-                    mappa.x= x
-                    mappa.y= y
-                    mappa.nome_mappa=nome
-                    mappa.save()
-        for y in range(0, ampiezzaInt):
-            for x in range(0, ampiezzaInt):
-                form = MappaForm(request.POST)
-                if form.is_valid():
-                    mappa = form.save(commit=False)
-                    mappa.x= -x
-                    mappa.y= -y
-                    mappa.nome_mappa=nome
-                    mappa.save()
-        for y in range(0, ampiezzaInt):
-            for x in range(0, ampiezzaInt):
-                form = MappaForm(request.POST)
-                if form.is_valid():
-                    mappa = form.save(commit=False)
-                    mappa.x= x
-                    mappa.y= -y
-                    mappa.nome_mappa=nome
-                    mappa.save()
-        for y in range(0, ampiezzaInt):
-            for x in range(0, ampiezzaInt):
-                form = MappaForm(request.POST)
-                if form.is_valid():
-                    mappa = form.save(commit=False)
-                    mappa.x= -x
-                    mappa.y= y
-                    mappa.nome_mappa=nome
-                    mappa.save()
+        # for y in range(0, ampiezzaInt):
+        #     for x in range(0, ampiezzaInt):
+        #         form = MappaForm(request.POST)
+        #         if form.is_valid():
+        #             mappa = form.save(commit=False)
+        #             mappa.x= x
+        #             mappa.y= y
+        #             mappa.nome_mappa=nome
+        #             mappa.save()
+        # for y in range(0, ampiezzaInt):
+        #     for x in range(0, ampiezzaInt):
+        #         form = MappaForm(request.POST)
+        #         if form.is_valid():
+        #             mappa = form.save(commit=False)
+        #             mappa.x= -x
+        #             mappa.y= -y
+        #             mappa.nome_mappa=nome
+        #             mappa.save()
+        # for y in range(0, ampiezzaInt):
+        #     for x in range(0, ampiezzaInt):
+        #         form = MappaForm(request.POST)
+        #         if form.is_valid():
+        #             mappa = form.save(commit=False)
+        #             mappa.x= x
+        #             mappa.y= -y
+        #             mappa.nome_mappa=nome
+        #             mappa.save()
+        # for y in range(0, ampiezzaInt):
+        #     for x in range(0, ampiezzaInt):
+        #         form = MappaForm(request.POST)
+        #         if form.is_valid():
+        #             mappa = form.save(commit=False)
+        #             mappa.x= -x
+        #             mappa.y= y
+        #             mappa.nome_mappa=nome
+        #             mappa.save()
 
     else:
         form = MappaForm()
@@ -157,7 +184,6 @@ def grafici (request):
         nome= NomeForm()
 
     scalo=1
-
 
     x= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3 ).values_list('x', flat=True)))
     y= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3).values_list('y', flat=True)))
@@ -174,4 +200,4 @@ def grafici (request):
 
 
 
-    return render(request, 'grafici.html', {'form':form, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml})
+    return render(request, 'grafici.html', { 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml})
