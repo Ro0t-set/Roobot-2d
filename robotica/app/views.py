@@ -75,6 +75,7 @@ def grafici (request):
 
 
     if 'inizza_mappatura' in request.POST :
+<<<<<<< HEAD
         nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
         spostamentoX=0
         spostamentoY=0
@@ -84,6 +85,9 @@ def grafici (request):
         Rad180=math.pi
         a=0
         angle = 0
+=======
+
+>>>>>>> da2df8c244be4de8a9a945c31bd01bbd3e3a5843
         while a<72:
             a=str(a)
             distance="read"+a
