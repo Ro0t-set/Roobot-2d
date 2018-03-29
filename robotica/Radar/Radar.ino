@@ -21,12 +21,14 @@ Servo servomotore;
 
 void setup(){
 Serial.begin (115200); //Comunicazione seriale 115200 bit
+while (!Serial){ 
 servomotore.attach(3);
 pinMode(2,OUTPUT);
 pinMode(12,OUTPUT);
 digitalWrite(2,HIGH);
 digitalWrite(12,HIGH);
 servomotore.write(180);
+}
 }
 /*Il loop comprende due funzioni; sensori e Mappa, attivate ogni 15 gradi di movimento del servomotore, 
 sensori rileva le distanze, Mappa invia i valori al seriale, ogni ciclo del radar produce 24 valori in centimetri*/
@@ -35,11 +37,11 @@ void loop() {
 angolo = 0;
 while(angolo<180)
 {
-   angolo = angolo+5;
+   angolo = angolo+10;
    servomotore.write(angolo);
    sensori();
    Mappa();
-   delay(1000);
+   delay(500);
 
 }
        
