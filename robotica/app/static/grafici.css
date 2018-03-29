@@ -103,3 +103,7 @@ div#load_screen > div#loading{
   height:24px;
   margin: 300px auto;
 }
+#morphing {
+  margin-left: 500px;
+  margin-right: auto;
+}
