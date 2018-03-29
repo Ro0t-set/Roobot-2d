@@ -35,7 +35,7 @@ import os
 import sys
 import math
 import importlib
-import RandomSerial
+import Serial
 import threading
 from queue import Queue
 import time
@@ -78,8 +78,8 @@ def grafici (request):
         nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
         spostamentoX=0
         spostamentoY=0
-        
-        SerialReload = importlib.reload(RandomSerial)
+
+        SerialReload = importlib.reload(Serial)
         Rad180=math.pi
         a=0
         angle = 0
@@ -104,10 +104,12 @@ def grafici (request):
                 angle=angle+5
             if distance<100:
                 Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
-
             a= a+1
 
-        distanzaMaxList=[Serial.read0,Serial.read1,Serial.read36,Serial.read37]
+        Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
+
+
+        distanzaMaxList=[Serial.read0,Serial.read1,Serial.read30,Serial.read3]
 
         distanceMax=max(distanzaMaxList)
         print("distanza massima:",distanceMax)
@@ -188,6 +190,8 @@ def grafici (request):
 
     x= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3 ).values_list('x', flat=True)))
     y= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3).values_list('y', flat=True)))
+    posizioneX=(list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=10).values_list('x', flat=True)))
+    posizioneY= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=10).values_list('y', flat=True)))
     a=0
     xyhtml=""
     for x in x:
@@ -199,6 +203,17 @@ def grafici (request):
         xyhtml=str(xyhtml)+str("{x:"+(xy)+",y:"+ (yx)+", r: 4},")
         a=a+1
 
+    a=0
+    posizionehtml=""
+    print(posizioneY)
+    for posizioneX in posizioneX:
+        posixioneXY=int(posizioneX/scalo)
+        posixioneXY=str(posixioneXY)
+        posizioneYX=int(posizioneY[a])
+        posizioneYX=str(posizioneY[a])
+        posizionehtml=str(posizionehtml)+str("{x:"+(posixioneXY)+",y:"+ (posizioneYX)+", r: 7},")
+        a=a+1
 
 
-    return render(request, 'grafici.html', { 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml})
+
+    return render(request, 'grafici.html', { 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
