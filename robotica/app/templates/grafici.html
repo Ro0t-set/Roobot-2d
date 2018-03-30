@@ -104,10 +104,11 @@
 
 </div>
 <div class="col-5">
-<p>*la senzità che può essere compresa tra 5-20 rapresenta l'angolo che il servo compierà tra una rielavazione ed un'altra. piu il valore è basso maggiori saranno i rilevamentio<p>
+<p class="info-description-i">*la densità rappresenta l'angolo tra una rilevazione e l'altra. <br> più è basso il valore maggiori saranno i rilevamenti<p>
 </div>
 
           <form method="POST" class="post-form">{% csrf_token %}
+            <button class="btn btn-info" onclick="info-description-i.style.visibility='visible';">i</button>
             {{densità}}
             <button onclick="loading.style.display='block';" type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-success">inizzia mappaggio</button>
             <button type="submit" name="resetta_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-danger">resetta mappa</button>

@@ -104,6 +104,11 @@ div#load_screen > div#loading{
   margin: 300px auto;
 }
 #morphing {
-  margin-left: 500px;
-  margin-right: auto;
+  position: absolute;
+  top: -500px;
+  left: 1000px;
+  z-index: 100001;
+}
+.info-description-i {
+  visibility: hidden;
 }
