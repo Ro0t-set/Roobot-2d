@@ -24,3 +24,7 @@ class AmpiezzaForm(forms.Form):
     widgets = {
             'ampiezza': forms.NumberInput(attrs={'class': 'form-control text'}),
         }
+
+class DensitàForm(forms.Form):
+    densità = forms.IntegerField( min_value=5, max_value=20, initial=10)
+    fields = ('densità')

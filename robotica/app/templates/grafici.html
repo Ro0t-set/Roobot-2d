@@ -103,10 +103,12 @@
           <br>
 
 </div>
-
-
+<div class="col-5">
+<p>*la senzità che può essere compresa tra 5-20 rapresenta l'angolo che il servo compierà tra una rielavazione ed un'altra. piu il valore è basso maggiori saranno i rilevamentio<p>
+</div>
 
           <form method="POST" class="post-form">{% csrf_token %}
+            {{densità}}
             <button onclick="loading.style.display='block';" type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-success">inizzia mappaggio</button>
             <button type="submit" name="resetta_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-danger">resetta mappa</button>
             <a class="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -131,8 +133,8 @@ Info {{listaMappe}}:
 
           Chart.scaleService.updateScaleDefaults('linear', {
             ticks: {
-              min: -100,
-              max: 100,
+              min: -{{maxYX}},
+              max: {{maxYX}},
               stepSize: 10
             }
           });

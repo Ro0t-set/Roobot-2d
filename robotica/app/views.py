@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render
-from .forms import MappaForm, AmpiezzaForm, NomeForm
+from .forms import MappaForm, AmpiezzaForm, NomeForm, DensitàForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -35,7 +35,7 @@ import os
 import sys
 import math
 import importlib
-import Serial
+import RandomSerial
 import threading
 from queue import Queue
 import time
@@ -67,67 +67,72 @@ def grafici (request):
     #idMappa= request.POST['mappaId']
     # print(idMappa)
     if 'resetta_mappatura' in request.POST :
-        print_lock = threading.Lock()
-        q= Queue()
+        postamentoX=0
+        spostamentoY=0
         for mappaSingola in mappaSingola:
             if mappaSingola.aggettivo != 1:
                mappaSingola.delete()
 
 
     if 'inizza_mappatura' in request.POST :
+        densità = DensitàForm(request.POST)
+        if densità.is_valid():
+            denditàInt=int(request.POST.get("densità"))
+            print("denzità:",denditàInt)
+            rivelazioni=360/denditàInt
+        else:
+            densità=DensitàForm()
         nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
         spostamentoX=0
         spostamentoY=0
+        r=0
+        while r<5:
+            r=r+1
 
-        Reload = importlib.reload(Serial)
-        Rad180=math.pi
-        a=0
-        angle = 0
-        nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
+            Reload = importlib.reload(RandomSerial)
+            Rad180=math.pi
+            a=0
+            angle = 0
+            nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
 
-        while a<72:
-            a=str(a)
-            distance="read"+a
-            distance="Serial."+distance
-            distance=eval(distance)#lettura distanza
-            distance=int(distance)
-            print("...............")
-            print(distance)
-            a=int(a)
-            angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
-            if a%2 == 0:
-                x = int((math.cos(angleRad)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad)*distance)+spostamentoY)
-            else:
-                x = int((math.cos(angleRad+Rad180)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                y = int((math.sin(angleRad+Rad180)*distance)+spostamentoY)
-                angle=angle+5
-            if distance<100:
-                Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
-            a= a+1
-
-        Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
+            while a<rivelazioni:
+                a=str(a)
+                distance="read"+a
+                distance="RandomSerial."+distance
+                distance=eval(distance)#lettura distanza
+                distance=int(distance)
+                a=int(a)
+                angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
+                if a%2 == 0:
+                    x = int((math.cos(angleRad)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                    y = int((math.sin(angleRad)*distance)+spostamentoY)
+                else:
+                    x = int((math.cos(angleRad+Rad180)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                    y = int((math.sin(angleRad+Rad180)*distance)+spostamentoY)
+                    angle=angle+denditàInt
+                if distance<100:
+                    Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
+                a= a+1
 
 
-        distanzaMaxList=[Serial.read0,Serial.read1,Serial.read30,Serial.read3]
-
-        distanceMax=max(distanzaMaxList)
-        print("distanza massima:",distanceMax)
-        if distanceMax==Serial.read0:
-            spostamentoX=spostamentoX+(int(distanceMax/2))
-            print("avanti")
-        elif distanceMax==Serial.read1:
-            spostamentoX=spostamentoX-(int(distanceMax/2))
-            print("indietro")
-        elif distanceMax==Serial.read32:
-            spostamentoY=spostamentoY+(int(distanceMax/2))
-            print("destra")
-        elif distanceMax==Serial.read30:
-            spostamentoY=spostamentoY-(int(distanceMax/2))
-            print("sinistra")
-        print("spostamento x:",spostamentoX)
-        print("spostamento y:",spostamentoY)
-
+            distanzaMaxList=[RandomSerial.read0,RandomSerial.read1,RandomSerial.read30,RandomSerial.read3]
+            Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
+            distanceMax=max(distanzaMaxList)
+            print("distanza massima:",distanceMax)
+            if distanceMax==RandomSerial.read0:
+                spostamentoX=spostamentoX+(int(distanceMax/2))
+                print("avanti")
+            elif distanceMax==RandomSerial.read1:
+                spostamentoX=spostamentoX-(int(distanceMax/2))
+                print("indietro")
+            elif distanceMax==RandomSerial.read32:
+                spostamentoY=spostamentoY+(int(distanceMax/2))
+                print("destra")
+            elif distanceMax==RandomSerial.read30:
+                spostamentoY=spostamentoY-(int(distanceMax/2))
+                print("sinistra")
+            print("spostamento x:",spostamentoX)
+            print("spostamento y:",spostamentoY)
 
 
 
@@ -185,6 +190,7 @@ def grafici (request):
         form = MappaForm()
         ampiezza= AmpiezzaForm()
         nome= NomeForm()
+        densità=DensitàForm()
 
     scalo=1
 
@@ -192,6 +198,13 @@ def grafici (request):
     y= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3).values_list('y', flat=True)))
     posizioneX=(list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=10).values_list('x', flat=True)))
     posizioneY= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=10).values_list('y', flat=True)))
+
+    if x != []:
+        maxYX=[(max(x)),(max(y)),-(min(x)),-(min(y))]
+        maxYX=(max(maxYX))
+    else:
+        maxYX=100
+
     a=0
     xyhtml=""
     for x in x:
@@ -216,4 +229,4 @@ def grafici (request):
 
 
 
-    return render(request, 'grafici.html', { 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
+    return render(request, 'grafici.html', {'maxYX':maxYX, 'densità':densità, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
