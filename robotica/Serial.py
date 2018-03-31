@@ -27,6 +27,7 @@ ser.open()
 #     rilevazione=float(ser.readline().strip())
 #     d=int(d)
 #     d=d+1
+#     ser.close()
 
 read0  = float(ser.readline().strip())
 read1  = float(ser.readline().strip())
