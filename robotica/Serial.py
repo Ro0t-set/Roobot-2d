@@ -1,6 +1,14 @@
 import serial
 import time
 
+# from app.views import grafici
+# var=  grafici.denditàInt
+#
+# or
+#
+# import app.views
+#
+# var=  views.grafici.denditàInt
 
 
 ser = serial.Serial ('/dev/ttyACM0',)
