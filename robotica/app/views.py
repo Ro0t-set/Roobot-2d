@@ -108,6 +108,8 @@ def grafici (request):
             #
             # ser.write(str(denditàInt).encode())
             # ser.write(str('\n').encode())
+                    # if name == 'main':
+                    #     sys.exit(main())
 
 
             Reload = importlib.reload(Serial)
