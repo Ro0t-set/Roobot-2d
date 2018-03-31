@@ -18,6 +18,16 @@ ser.close()
 print ('Using SerialPort:')
 print (ser.name)
 ser.open()
+
+# d=0
+# while d<denditàint:
+#     d=str(d)
+#     rilevazione="read"+d
+#     rilevazione=eval(rilevazione)
+#     rilevazione=float(ser.readline().strip())
+#     d=int(d)
+#     d=d+1
+
 read0  = float(ser.readline().strip())
 read1  = float(ser.readline().strip())
 read2  = float(ser.readline().strip())
