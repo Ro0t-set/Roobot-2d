@@ -53,14 +53,16 @@ while(angolo<180)
    Mappa();
    delay(700);
    digitalWrite(13,LOW);
+}if (angolo == 180){
+Serial.println("end");
 }
 }
 }
 void Mappa(){
   Serial.println(Distance0);
   Serial.println(Distance1);
-  Serial.print("angolo = ");//commenta questa riga dopo aver eseguito il test
-  Serial.println(angolo);//commenta questa riga dopo aver eseguito il test
+  //Serial.print("angolo = ");//commenta questa riga dopo aver eseguito il test
+  //Serial.println(angolo);//commenta questa riga dopo aver eseguito il test
 }  
 void sensori(){
    Mseconds0 = sonar0.ping_median(5);
