@@ -35,10 +35,21 @@ import os
 import sys
 import math
 import importlib
-import RandomSerial
+import Serial
 import threading
 from queue import Queue
 import time
+
+# import serial
+# ser = Serial('/dev/ttyACM0',)
+# ser.baudrate = 115200
+#
+# print(ser.readline())
+#
+# ser.write(str(180).encode())
+# ser.write(str('\n').encode())
+# import Serial
+
 
 
 def grafici (request):
@@ -86,19 +97,31 @@ def grafici (request):
         spostamentoX=0
         spostamentoY=0
         r=0
-        while r<5:
+        while r<2:
             r=r+1
 
-            Reload = importlib.reload(RandomSerial)
+
+            # ser = Serial('/dev/ttyACM0',)
+            # ser.baudrate = 115200
+            #
+            # print(ser.readline())
+            #
+            # ser.write(str(denditàInt).encode())
+            # ser.write(str('\n').encode())
+
+
+            Reload = importlib.reload(Serial)
+
             Rad180=math.pi
             a=0
             angle = 0
             nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
 
+
             while a<rivelazioni:
                 a=str(a)
                 distance="read"+a
-                distance="RandomSerial."+distance
+                distance="Serial."+distance
                 distance=eval(distance)#lettura distanza
                 distance=int(distance)
                 a=int(a)
@@ -114,21 +137,31 @@ def grafici (request):
                     Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
                 a= a+1
 
+            Grad90 =int(360/denditàInt/2)
+            Grad90= str(Grad90)
 
-            distanzaMaxList=[RandomSerial.read0,RandomSerial.read1,RandomSerial.read30,RandomSerial.read3]
+            novanta="Serial.read"+Grad90
+            novanta=eval(novanta)
+            Grad90piuuno=str(int(Grad90)+1)
+            centoottanta="Serial.read"+Grad90piuuno
+            centoottanta=eval(centoottanta)
+
+            distanzaMaxList=[Serial.read0,Serial.read1, novanta, centoottanta]
             Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
             distanceMax=max(distanzaMaxList)
             print("distanza massima:",distanceMax)
-            if distanceMax==RandomSerial.read0:
+
+
+            if distanceMax==Serial.read0:
                 spostamentoX=spostamentoX+(int(distanceMax/2))
                 print("avanti")
-            elif distanceMax==RandomSerial.read1:
+            elif distanceMax==Serial.read1:
                 spostamentoX=spostamentoX-(int(distanceMax/2))
                 print("indietro")
-            elif distanceMax==RandomSerial.read32:
+            elif distanceMax==novanta:
                 spostamentoY=spostamentoY+(int(distanceMax/2))
                 print("destra")
-            elif distanceMax==RandomSerial.read30:
+            elif distanceMax==centoottanta:
                 spostamentoY=spostamentoY-(int(distanceMax/2))
                 print("sinistra")
             print("spostamento x:",spostamentoX)
