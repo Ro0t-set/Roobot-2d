@@ -1,14 +1,6 @@
 import serial
 import time
 
-# from app.views import grafici
-# var=  grafici.denditàInt
-#
-# or
-#
-# import app.views
-#
-# var=  views.grafici.denditàInt
 
 
 ser = serial.Serial ('/dev/ttyACM0',)
@@ -18,17 +10,6 @@ ser.close()
 print ('Using SerialPort:')
 print (ser.name)
 ser.open()
-
-# d=0
-# while d<denditàint:
-#     d=str(d)
-#     rilevazione="read"+d
-#     rilevazione=eval(rilevazione)
-#     rilevazione=float(ser.readline().strip())
-#     d=int(d)
-#     d=d+1
-#     ser.close()
-
 read0  = float(ser.readline().strip())
 read1  = float(ser.readline().strip())
 read2  = float(ser.readline().strip())
