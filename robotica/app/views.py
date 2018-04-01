@@ -8,13 +8,9 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
-from django.forms import formset_factory
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
@@ -29,26 +25,16 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.template.loader import render_to_string
-from django.http import Http404
 from django.contrib import messages
 import os
 import sys
 import math
 import importlib
-import Serial
 import threading
 from queue import Queue
 import time
+import Serial
 
-# import serial
-# ser = Serial('/dev/ttyACM0',)
-# ser.baudrate = 115200
-#
-# print(ser.readline())
-#
-# ser.write(str(180).encode())
-# ser.write(str('\n').encode())
-# import Serial
 
 
 
@@ -88,144 +74,93 @@ def grafici (request):
     if 'inizza_mappatura' in request.POST :
         densità = DensitàForm(request.POST)
         if densità.is_valid():
+
             denditàInt=int(request.POST.get("densità"))
             print("denzità:",denditàInt)
             rivelazioni=360/denditàInt
-        else:
-            densità=DensitàForm()
-        nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
-        spostamentoX=0
-        spostamentoY=0
-        r=0
-        while r<2:
-            r=r+1
 
-
-            # ser = Serial('/dev/ttyACM0',)
-            # ser.baudrate = 115200
-            #
-            # print(ser.readline())
-            #
-            # ser.write(str(denditàInt).encode())
-            # ser.write(str('\n').encode())
-            # if name == 'main':
-            #     sys.exit(main())
-
-
-            Reload = importlib.reload(Serial)
-
-            Rad180=math.pi
-            a=0
-            angle = 0
             nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
-
-
-            while a<rivelazioni:
-                a=str(a)
-                distance="read"+a
-                distance="Serial."+distance
-                distance=eval(distance)#lettura distanza
-                distance=int(distance)
-                a=int(a)
-                angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
-                if a%2 == 0:
-                    x = int((math.cos(angleRad)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                    y = int((math.sin(angleRad)*distance)+spostamentoY)
-                else:
-                    x = int((math.cos(angleRad+Rad180)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                    y = int((math.sin(angleRad+Rad180)*distance)+spostamentoY)
-                    angle=angle+denditàInt
-                if distance<100:
-                    Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
-                a= a+1
-
-            Grad90 =int(360/denditàInt/2)
-            Grad90= str(Grad90)
-
-            novanta="Serial.read"+Grad90
-            novanta=eval(novanta)
-            Grad90piuuno=str(int(Grad90)+1)
-            centoottanta="Serial.read"+Grad90piuuno
-            centoottanta=eval(centoottanta)
-
-            distanzaMaxList=[Serial.read0,Serial.read1, novanta, centoottanta]
-            Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
-            distanceMax=max(distanzaMaxList)
-            print("distanza massima:",distanceMax)
-
-
-            if distanceMax==Serial.read0:
-                spostamentoX=spostamentoX+(int(distanceMax/2))
-                print("avanti")
-            elif distanceMax==Serial.read1:
-                spostamentoX=spostamentoX-(int(distanceMax/2))
-                print("indietro")
-            elif distanceMax==novanta:
-                spostamentoY=spostamentoY+(int(distanceMax/2))
-                print("destra")
-            elif distanceMax==centoottanta:
-                spostamentoY=spostamentoY-(int(distanceMax/2))
-                print("sinistra")
-            print("spostamento x:",spostamentoX)
-            print("spostamento y:",spostamentoY)
+            spostamentoX=0
+            spostamentoY=0
+            r=0
+            while r<2:
+                r=r+1
 
 
 
+                Reload = importlib.reload(Serial)
+
+                Rad180=math.pi
+                a=0
+                angle = 0
+                nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
+
+
+                while a<rivelazioni:
+                    a=str(a)
+                    distance="read"+a
+                    distance="Serial."+distance
+                    distance=eval(distance)#lettura distanza
+                    distance=int(distance)
+                    a=int(a)
+                    angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
+                    if a%2 == 0:
+                        x = int((math.cos(angleRad)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                        y = int((math.sin(angleRad)*distance)+spostamentoY)
+                    else:
+                        x = int((math.cos(angleRad+Rad180)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                        y = int((math.sin(angleRad+Rad180)*distance)+spostamentoY)
+                        angle=angle+denditàInt
+                    if distance<100:
+                        Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
+                    a= a+1
+
+                Grad90 =int(360/denditàInt/2)
+                Grad90= str(Grad90)
+
+                novanta="Serial.read"+Grad90
+                novanta=eval(novanta)
+                Grad90piuuno=str(int(Grad90)+1)
+                centoottanta="Serial.read"+Grad90piuuno
+                centoottanta=eval(centoottanta)
+
+                distanzaMaxList=[Serial.read0,Serial.read1, novanta, centoottanta]
+                Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
+                distanceMax=max(distanzaMaxList)
+                print("distanza massima:",distanceMax)
+
+
+                if distanceMax==Serial.read0:
+                    spostamentoX=spostamentoX+(int(distanceMax/2))
+                    print("avanti")
+                elif distanceMax==Serial.read1:
+                    spostamentoX=spostamentoX-(int(distanceMax/2))
+                    print("indietro")
+                elif distanceMax==novanta:
+                    spostamentoY=spostamentoY+(int(distanceMax/2))
+                    print("destra")
+                elif distanceMax==centoottanta:
+                    spostamentoY=spostamentoY-(int(distanceMax/2))
+                    print("sinistra")
+                print("spostamento x:",spostamentoX)
+                print("spostamento y:",spostamentoY)
+
+    else:
+        densità=DensitàForm()
 
 
 
     if 'creazione_mappa' in request.POST :
-        messages.success(request, 'Griglia Creata Con Successo.')  #messaggio di successo
-        # ampiezzaInt=int(request.POST.get("ampiezza"))  #richiesta del numero intero inserito prima all'interno dell'html
-        nome.nome_mappa=nome   #selezione e salvataggio nella tabella Nome del capom nome
-        nome.save()
-        nome=(request.POST.get("nome_mappa")) #estrapolazione del nome dall'html
-        nome= Nome.objects.get(nome_mappa=nome)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
+        nome= NomeForm(request.POST)
+        if nome.is_valid():
+            messages.success(request, 'Griglia Creata Con Successo.')  #messaggio di successo
+            # ampiezzaInt=int(request.POST.get("ampiezza"))  #richiesta del numero intero inserito prima all'interno dell'html
+            nome.nome_mappa=nome   #selezione e salvataggio nella tabella Nome del capom nome
+            nome.save()
 
+        else:
+            nome= NomeForm()
 
-#creazione di una griglia che si espande nelle 4 direzioni di un piano cartesiano con ampiezza ripetuta per ogni quadrante
-        # for y in range(0, ampiezzaInt):
-        #     for x in range(0, ampiezzaInt):
-        #         form = MappaForm(request.POST)
-        #         if form.is_valid():
-        #             mappa = form.save(commit=False)
-        #             mappa.x= x
-        #             mappa.y= y
-        #             mappa.nome_mappa=nome
-        #             mappa.save()
-        # for y in range(0, ampiezzaInt):
-        #     for x in range(0, ampiezzaInt):
-        #         form = MappaForm(request.POST)
-        #         if form.is_valid():
-        #             mappa = form.save(commit=False)
-        #             mappa.x= -x
-        #             mappa.y= -y
-        #             mappa.nome_mappa=nome
-        #             mappa.save()
-        # for y in range(0, ampiezzaInt):
-        #     for x in range(0, ampiezzaInt):
-        #         form = MappaForm(request.POST)
-        #         if form.is_valid():
-        #             mappa = form.save(commit=False)
-        #             mappa.x= x
-        #             mappa.y= -y
-        #             mappa.nome_mappa=nome
-        #             mappa.save()
-        # for y in range(0, ampiezzaInt):
-        #     for x in range(0, ampiezzaInt):
-        #         form = MappaForm(request.POST)
-        #         if form.is_valid():
-        #             mappa = form.save(commit=False)
-        #             mappa.x= -x
-        #             mappa.y= y
-        #             mappa.nome_mappa=nome
-        #             mappa.save()
-
-    else:
-        form = MappaForm()
-        ampiezza= AmpiezzaForm()
-        nome= NomeForm()
-        densità=DensitàForm()
 
     scalo=1
 
@@ -264,4 +199,4 @@ def grafici (request):
 
 
 
-    return render(request, 'grafici.html', {'maxYX':maxYX, 'densità':densità, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
+    return render(request, 'grafici.html', {'maxYX':maxYX, 'densità':densità,  'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
