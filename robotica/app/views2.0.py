@@ -122,8 +122,7 @@ def grafici (request):
 
                 if name == 'main':
                     sys.exit(main())
-
-
+                a=a+1
 
             distanzaMaxList=[Serial.read0,Serial.read1,Serial.read30,Serial.read3]
             Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
