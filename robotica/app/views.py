@@ -33,7 +33,6 @@ import importlib
 import threading
 from queue import Queue
 import time
-import Serial
 
 
 
@@ -88,7 +87,10 @@ def grafici (request):
 
 
 
-                Reload = importlib.reload(Serial)
+                try:
+                    Reload = importlib.reload(Serial)
+                except:
+                    import Serial
 
                 Rad180=math.pi
                 a=0
