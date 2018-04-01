@@ -26,5 +26,5 @@ class AmpiezzaForm(forms.Form):
         }
 
 class DensitàForm(forms.Form):
-    densità = forms.IntegerField( min_value=5, max_value=20, initial=10)
+    densità = forms.IntegerField( min_value=5, max_value=20, initial=5)
     fields = ('densità')

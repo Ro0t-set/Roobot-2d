@@ -71,10 +71,8 @@ def grafici (request):
 
 
     if 'inizza_mappatura' in request.POST :
-        densità = DensitàForm(request.POST)
-        if densità.is_valid():
 
-            denditàInt=int(request.POST.get("densità"))
+            denditàInt=int(5)
             print("denzità:",denditàInt)
             rivelazioni=360/denditàInt
 
@@ -147,8 +145,7 @@ def grafici (request):
                 print("spostamento x:",spostamentoX)
                 print("spostamento y:",spostamentoY)
 
-    else:
-        densità=DensitàForm()
+
 
 
 
@@ -201,4 +198,4 @@ def grafici (request):
 
 
 
-    return render(request, 'grafici.html', {'maxYX':maxYX, 'densità':densità,  'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
+    return render(request, 'grafici.html', {'maxYX':maxYX,   'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
