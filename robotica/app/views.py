@@ -34,6 +34,7 @@ import importlib
 import threading
 from queue import Queue
 import time
+import movimento
 
 
 
@@ -137,21 +138,25 @@ def grafici (request):
                     spostamentoX=spostamentoX+(int(distanceMax/2))
                     direzione="avanti"
                     print("avanti")
+                    movimento.avanti(5)
 
                 elif distanceMax==Serial.read1 and direzione != "avanti":
                     direzione="indietro"
                     spostamentoX=spostamentoX-(int(distanceMax/2))
                     print("indietro")
+                    movimento.indietro(5)
 
                 elif distanceMax==novanta:
                     direzione="avanti"
                     spostamentoY=spostamentoY+(int(distanceMax/2))
                     print("destra")
+                    movimento.destra(5)
 
                 elif distanceMax==centoottanta:
                     direzione="avanti"
                     spostamentoY=spostamentoY-(int(distanceMax/2))
                     print("sinistra")
+                    movimento.sinistra(5)
 
 
 
@@ -174,7 +179,7 @@ def grafici (request):
             nome= NomeForm()
 
 
-    scalo=1
+
 
     x= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3 ).values_list('x', flat=True)))
     y= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3).values_list('y', flat=True)))
@@ -193,10 +198,10 @@ def grafici (request):
     a=0
     xyhtml=""
     for x in x:
-        xy=int(x/scalo)
+        xy=int(x)
         xy=str(xy)
         yx=int(y[a])
-        yx=yx/scalo
+        yx=yx
         yx=str(y[a])
         xyhtml=str(xyhtml)+str("{x:"+(xy)+",y:"+ (yx)+", r: 4},")
         a=a+1
@@ -205,7 +210,7 @@ def grafici (request):
     posizionehtml=""
     print(posizioneY)
     for posizioneX in posizioneX:
-        posixioneXY=int(posizioneX/scalo)
+        posixioneXY=int(posizioneX)
         posixioneXY=str(posixioneXY)
         posizioneYX=int(posizioneY[a])
         posizioneYX=str(posizioneY[a])
