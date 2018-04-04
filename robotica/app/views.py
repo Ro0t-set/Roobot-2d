@@ -26,6 +26,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.template.loader import render_to_string
 from django.contrib import messages
+from django.db.models import Count
 import os
 import sys
 import math
@@ -40,7 +41,7 @@ import time
 def grafici (request):
     listaMappe= Nome.objects.all()
     mappa=  Mappa.objects.all()
-
+    direzione= ""
     page = request.GET.get('page')
 
     paginator = Paginator(listaMappe, 1) # Show 1 contacts per page
@@ -58,6 +59,7 @@ def grafici (request):
     mappaSingola = Mappa.objects.filter(nome_mappa=idMappa)
 
 
+
     ampiezza= AmpiezzaForm(request.POST)#lettura html dell'ampiezza
     nome= NomeForm(request.POST)#lettura html del nome mappa
     #idMappa= request.POST['mappaId']
@@ -72,7 +74,7 @@ def grafici (request):
 
     if 'inizza_mappatura' in request.POST :
 
-            denditàInt=int(5)
+            denditàInt=int(15)
             print("denzità:",denditàInt)
             rivelazioni=360/denditàInt
 
@@ -80,7 +82,7 @@ def grafici (request):
             spostamentoX=0
             spostamentoY=0
             r=0
-            while r<2:
+            while r<5:
                 r=r+1
 
 
@@ -130,18 +132,29 @@ def grafici (request):
                 print("distanza massima:",distanceMax)
 
 
-                if distanceMax==Serial.read0:
+
+                if distanceMax==Serial.read0 and direzione != "indietro":
                     spostamentoX=spostamentoX+(int(distanceMax/2))
+                    direzione="avanti"
                     print("avanti")
-                elif distanceMax==Serial.read1:
+
+                elif distanceMax==Serial.read1 and direzione != "avanti":
+                    direzione="indietro"
                     spostamentoX=spostamentoX-(int(distanceMax/2))
                     print("indietro")
+
                 elif distanceMax==novanta:
+                    direzione="avanti"
                     spostamentoY=spostamentoY+(int(distanceMax/2))
                     print("destra")
+
                 elif distanceMax==centoottanta:
+                    direzione="avanti"
                     spostamentoY=spostamentoY-(int(distanceMax/2))
                     print("sinistra")
+
+
+
                 print("spostamento x:",spostamentoX)
                 print("spostamento y:",spostamentoY)
 
@@ -167,6 +180,9 @@ def grafici (request):
     y= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3).values_list('y', flat=True)))
     posizioneX=(list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=10).values_list('x', flat=True)))
     posizioneY= (list(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=10).values_list('y', flat=True)))
+
+    nRilevazioni=(Mappa.objects.filter(nome_mappa=idMappa, aggettivo=3))
+
 
     if x != []:
         maxYX=[(max(x)),(max(y)),-(min(x)),-(min(y))]
@@ -198,4 +214,4 @@ def grafici (request):
 
 
 
-    return render(request, 'grafici.html', {'maxYX':maxYX,   'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
+    return render(request, 'grafici.html', {'maxYX':maxYX, 'nRilevazioni':nRilevazioni, 'ampiezza':ampiezza, 'listaMappe': listaMappe, 'nome': nome, 'xyhtml':xyhtml, 'posizionehtml':posizionehtml})
