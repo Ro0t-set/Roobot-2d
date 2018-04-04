@@ -34,9 +34,8 @@ import importlib
 import threading
 from queue import Queue
 import time
-import movimento
-
-
+#import movimento
+from movimento import avanti, indietro, destra, sinistra
 
 
 def grafici (request):
@@ -138,25 +137,25 @@ def grafici (request):
                     spostamentoX=spostamentoX+(int(distanceMax/2))
                     direzione="avanti"
                     print("avanti")
-                    movimento.avanti(5)
+                    avanti(5)
 
                 elif distanceMax==Serial.read1 and direzione != "avanti":
                     direzione="indietro"
                     spostamentoX=spostamentoX-(int(distanceMax/2))
                     print("indietro")
-                    movimento.indietro(5)
+                    indietro(5)
 
                 elif distanceMax==novanta:
                     direzione="avanti"
                     spostamentoY=spostamentoY+(int(distanceMax/2))
                     print("destra")
-                    movimento.destra(5)
+                    destra(5)
 
                 elif distanceMax==centoottanta:
                     direzione="avanti"
                     spostamentoY=spostamentoY-(int(distanceMax/2))
                     print("sinistra")
-                    movimento.sinistra(5)
+                    sinistra(5)
 
 
 
