@@ -34,6 +34,7 @@ import importlib
 import threading
 from queue import Queue
 import time
+import Serial
 #import movimento
 from movimento import avanti, indietro, destra, sinistra
 
@@ -58,6 +59,9 @@ def grafici (request):
     idMappa=listaMappe.object_list.values_list('id', flat=True)
     mappaSingola = Mappa.objects.filter(nome_mappa=idMappa)
 
+
+
+
     if 'cancellaMappa'in request.POST :
         eliminaMappa=Nome.objects.get(id= idMappa)
         eliminaMappa.delete()
@@ -72,11 +76,18 @@ def grafici (request):
         mappaCancella=Mappa.objects.all()
         mappaCancella.delete()
 
+    if 'stop' in request.POST :
+        stop.stop=True
+        stop.save()
+        print(stop.stop)
+
 
     if 'inizza_mappatura' in request.POST :
+            stop.stop=False
+            stop.save()
             #MovimentoLib = importlib.reload(avanti, indietro, destra, sinistra)
 
-            denditàInt=int(15)
+            denditàInt=int(5)
             print("denzità:",denditàInt)
             rivelazioni=360/denditàInt
 
@@ -85,19 +96,15 @@ def grafici (request):
             spostamentoY=0
             r=0
             while r<10:
+                if stop.stop:
+                    break
+                    stop.stop=False
+                    stop.save()
                 r=r+1
 
                 print ("(",r,")")
 
-                if 'stop' in request.POST :
-                    break
-
-
-
-                try:
-                    Reload = importlib.reload(Serial)
-                except:
-                    import Serial
+                Reload = importlib.reload(Serial)
 
                 Rad180=math.pi
                 a=0
@@ -106,6 +113,8 @@ def grafici (request):
 
 
                 while a<rivelazioni:
+                    if stop.stop:
+                        break
                     a=str(a)
                     distance="read"+a
                     distance="Serial."+distance

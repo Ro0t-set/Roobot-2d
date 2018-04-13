@@ -7,6 +7,7 @@ from django.utils import timezone
 
 class Nome(models.Model):
 	nome_mappa= models.CharField(default="", max_length=100)
+	stop= models.BooleanField(default=False)
 	def __str__(self):
 		return str(self.nome_mappa)
 
@@ -27,6 +28,7 @@ class Mappa(models.Model):
 
 	x = models.IntegerField(blank=True, null=True)
 	y = models.IntegerField(blank=True, null=True)
+
 
 	aggettivo =  models.IntegerField(blank=True, null=True, default=1)
 	def __str__(self):
