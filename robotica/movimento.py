@@ -18,7 +18,7 @@ def avanti(distanzaTemporale):
     GPIO.output(25, GPIO.LOW)
     GPIO.output(23, GPIO.LOW)
     GPIO.output(24, GPIO.LOW)
-    return 0
+
 
 def indietro(distanzaTemporale):
     GPIO.output(18, GPIO.LOW)
@@ -28,7 +28,7 @@ def indietro(distanzaTemporale):
     time.sleep(distanzaTemporale)
     GPIO.output(23, GPIO.LOW)
     GPIO.output(24, GPIO.LOW)
-    return 0
+
 
 def destra(distanzaTemporale):
     GPIO.output(18, GPIO.LOW)
@@ -38,7 +38,6 @@ def destra(distanzaTemporale):
     time.sleep(distanzaTemporale)
     GPIO.output(25, GPIO.LOW)
     GPIO.output(23, GPIO.LOW)
-    return 0
 
 def sinistra(distanzaTemporale):
     GPIO.output(18, GPIO.HIGH)
@@ -48,4 +47,3 @@ def sinistra(distanzaTemporale):
     GPIO.output(24, GPIO.LOW)
     GPIO.output(25, GPIO.LOW)
     GPIO.output(23, GPIO.LOW)
-    return 0

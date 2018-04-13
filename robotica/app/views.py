@@ -58,7 +58,9 @@ def grafici (request):
     idMappa=listaMappe.object_list.values_list('id', flat=True)
     mappaSingola = Mappa.objects.filter(nome_mappa=idMappa)
 
-
+    if 'cancellaMappa'in request.POST :
+        eliminaMappa=Nome.objects.get(id= idMappa)
+        eliminaMappa.delete()
 
     ampiezza= AmpiezzaForm(request.POST)#lettura html dell'ampiezza
     nome= NomeForm(request.POST)#lettura html del nome mappa
@@ -67,12 +69,12 @@ def grafici (request):
     if 'resetta_mappatura' in request.POST :
         postamentoX=0
         spostamentoY=0
-        for mappaSingola in mappaSingola:
-            if mappaSingola.aggettivo != 1:
-               mappaSingola.delete()
+        mappaCancella=Mappa.objects.all()
+        mappaCancella.delete()
 
 
     if 'inizza_mappatura' in request.POST :
+            #MovimentoLib = importlib.reload(avanti, indietro, destra, sinistra)
 
             denditàInt=int(15)
             print("denzità:",denditàInt)
@@ -82,8 +84,13 @@ def grafici (request):
             spostamentoX=0
             spostamentoY=0
             r=0
-            while r<5:
+            while r<10:
                 r=r+1
+
+                print ("(",r,")")
+
+                if 'stop' in request.POST :
+                    break
 
 
 
@@ -129,7 +136,7 @@ def grafici (request):
                 distanzaMaxList=[Serial.read0,Serial.read1, novanta, centoottanta]
                 Mappa.objects.create(x=spostamentoX, y=spostamentoY, nome_mappa=nome, aggettivo=10)
                 distanceMax=max(distanzaMaxList)
-                print("distanza massima:",distanceMax)
+
 
 
 

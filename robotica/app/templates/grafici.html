@@ -60,6 +60,9 @@
       <div class="col-sm">
 
 
+      <a class="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+      Crea Mappa
+      </a>
 
 <div class="collapse" id="collapseExample">
   <form method="POST" class="post-form">{% csrf_token %}
@@ -102,23 +105,21 @@
         <p>
           <br>
 
-</div>
-<div class="col-5">
-<p class="info-description-i">*la densità rappresenta l'angolo tra una rilevazione e l'altra. <br> più è basso il valore maggiori saranno i rilevamenti<p>
-</div>
 
           <form method="POST" class="post-form">{% csrf_token %}
-            <button class="btn btn-info" onclick="info-description-i.style.visibility='visible';">i</button>
-            {{densità}}
+
+            {%if nRilevazioni.count == 0 %}
             <button onclick="loading.style.display='block';" type="submit" name="inizza_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-success">inizzia mappaggio</button>
+            <button type="submit" name="stop"  class="bottone btn btn-danger">Stop!</button>
+            {%else%}
             <button type="submit" name="resetta_mappatura" value="{{listaMappe.id}}" class="bottone btn btn-danger">resetta mappa</button>
-            <a class="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Crea Mappa
-            </a>
+            {%endif%}
+            <button type="submit" name="cancellaMappa" class="bottone btn btn-danger">Elimina!</button>
+
         </p>
     </form>
 <br>
-Info {{listaMappe}}:
+Info {{listaMappe}}:   N°Rilevazioni={{nRilevazioni.count}}
 <br><br>
     <form class="col-8 align-items-center justify-content-center">
 
@@ -136,7 +137,7 @@ Info {{listaMappe}}:
             ticks: {
               min: -{{maxYX}},
               max: {{maxYX}},
-              stepSize: 10
+              stepSize: 50
             }
           });
 
