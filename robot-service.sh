@@ -25,10 +25,7 @@ do_start()
 
 
    cd /home/Dersktop/Roobot-2d/robotica;
-   echo "Trovata Cartella!!";
-   sudo ifdown wlan0
-   sudo /usr/sbin/hostapd /etc/hostapd/hostapd.conf
-   exec python3 manage.py runserver 192.168.4.1:8000 &;
+   exec python3 manage.py runserver 10.3.141.1:8000 &;
    echo "Avvio eseguito con successo!";
 }
 

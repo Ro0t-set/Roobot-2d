@@ -34,6 +34,7 @@ import importlib
 import threading
 from queue import Queue
 import time
+import Serial
 #import movimento
 from movimento import avanti, indietro, destra, sinistra
 import Serial
@@ -58,6 +59,9 @@ def grafici (request):
     idMappa=listaMappe.object_list.values_list('id', flat=True)
     mappaSingola = Mappa.objects.filter(nome_mappa=idMappa)
 
+
+
+
     if 'cancellaMappa'in request.POST :
         eliminaMappa=Nome.objects.get(id= idMappa)
         eliminaMappa.delete()
@@ -73,6 +77,7 @@ def grafici (request):
         mappaCancella.delete()
 
     if 'stop' in request.POST :
+<<<<<<< HEAD
         stop=Nome.objects.get(id= idMappa)
         stop.stop=True
         stop.save()
@@ -80,6 +85,14 @@ def grafici (request):
 
     if 'inizza_mappatura' in request.POST :
             stop=Nome.objects.get(id= idMappa)
+=======
+        stop.stop=True
+        stop.save()
+        print(stop.stop)
+
+
+    if 'inizza_mappatura' in request.POST :
+>>>>>>> 29d230175dcd616d9550f7db7aaf378d08c39959
             stop.stop=False
             stop.save()
             #MovimentoLib = importlib.reload(avanti, indietro, destra, sinistra)
@@ -94,8 +107,13 @@ def grafici (request):
             giro=0
             r=0
             while r<10:
+                if stop.stop:
+                    break
+                    stop.stop=False
+                    stop.save()
                 r=r+1
 
+<<<<<<< HEAD
                 stop=Nome.objects.get(id= idMappa)
                 if stop.stop:
                     break
@@ -107,6 +125,10 @@ def grafici (request):
 
 
 
+=======
+                print ("(",r,")")
+
+>>>>>>> 29d230175dcd616d9550f7db7aaf378d08c39959
                 Reload = importlib.reload(Serial)
 
                 Rad180=math.pi
@@ -116,7 +138,12 @@ def grafici (request):
 
 
                 while a<rivelazioni:
+<<<<<<< HEAD
 
+=======
+                    if stop.stop:
+                        break
+>>>>>>> 29d230175dcd616d9550f7db7aaf378d08c39959
                     a=str(a)
                     distance="read"+a
                     distance="Serial."+distance
