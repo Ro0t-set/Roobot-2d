@@ -36,7 +36,7 @@ from queue import Queue
 import time
 #import movimento
 from movimento import avanti, indietro, destra, sinistra
-
+import Serial
 
 def grafici (request):
     listaMappe= Nome.objects.all()
@@ -72,32 +72,42 @@ def grafici (request):
         mappaCancella=Mappa.objects.all()
         mappaCancella.delete()
 
+    if 'stop' in request.POST :
+        stop=Nome.objects.get(id= idMappa)
+        stop.stop=True
+        stop.save()
+        print(stop.stop)
 
     if 'inizza_mappatura' in request.POST :
+            stop=Nome.objects.get(id= idMappa)
+            stop.stop=False
+            stop.save()
             #MovimentoLib = importlib.reload(avanti, indietro, destra, sinistra)
 
-            denditàInt=int(15)
+            denditàInt=int(5)
             print("denzità:",denditàInt)
             rivelazioni=360/denditàInt
 
             nome= Nome.objects.get(id=idMappa)#estrapolazione dell'id dal nome... Attenzione: se ci sono 2 o piu nomi uguali bugga tutto
             spostamentoX=0
             spostamentoY=0
+            giro=0
             r=0
             while r<10:
                 r=r+1
 
+                stop=Nome.objects.get(id= idMappa)
+                if stop.stop:
+                    break
+                    stop.stop=False
+                    stop.save()
+ 
+
                 print ("(",r,")")
 
-                if 'stop' in request.POST :
-                    break
 
 
-
-                try:
-                    Reload = importlib.reload(Serial)
-                except:
-                    import Serial
+                Reload = importlib.reload(Serial)
 
                 Rad180=math.pi
                 a=0
@@ -106,6 +116,7 @@ def grafici (request):
 
 
                 while a<rivelazioni:
+
                     a=str(a)
                     distance="read"+a
                     distance="Serial."+distance
@@ -114,11 +125,11 @@ def grafici (request):
                     a=int(a)
                     angleRad= angle*(math.pi)/180#calcolo angoli motore in radianti
                     if a%2 == 0:
-                        x = int((math.cos(angleRad)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                        y = int((math.sin(angleRad)*distance)+spostamentoY)
+                        x = int((math.cos(angleRad+giro)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                        y = int((math.sin(angleRad+giro)*distance)+spostamentoY)
                     else:
-                        x = int((math.cos(angleRad+Rad180)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
-                        y = int((math.sin(angleRad+Rad180)*distance)+spostamentoY)
+                        x = int((math.cos(angleRad+Rad180+giro)*distance)+spostamentoX)#creazione x e y per mezzo di seno e coseno, da lettura a cerchio a piano cartesiano
+                        y = int((math.sin(angleRad+Rad180+giro)*distance)+spostamentoY)
                         angle=angle+denditàInt
                     if distance<100:
                         Mappa.objects.create(x=x, y=y, nome_mappa=nome, aggettivo=3)#salvataggio dati
@@ -138,31 +149,64 @@ def grafici (request):
                 distanceMax=max(distanzaMaxList)
 
 
+                distanzaMaxList.remove(distanceMax)
+                distanceMax2=max(distanzaMaxList)
+
+                stop=Nome.objects.get(id= idMappa)
+                if stop.stop:
+                    break
+                    stop.stop=False
+                    stop.save()
 
 
-                if distanceMax==Serial.read0 and direzione != "indietro":
-                    spostamentoX=spostamentoX+(int(distanceMax/2))
+                #if distanceMax < 50 or distanceMax2 < 50:
+                 #   break
+                #if distanceMax2 > 100:
+                 #   distanceMax2=100
+                #if distanceMax > 100:
+                 #   distanceMax=100
+
+
+
+                movimento=((distanceMax*0.5)/12)
+
+                if distanceMax==novanta and direzione != "indietro":
+                    spostamentoY=spostamentoY+(int(distanceMax/2))
                     direzione="avanti"
                     print("avanti")
-                    avanti(5)
+                    avanti(movimento)
 
-                elif distanceMax==Serial.read1 and direzione != "avanti":
+                elif distanceMax==centoottanta and direzione != "avanti":
                     direzione="indietro"
-                    spostamentoX=spostamentoX-(int(distanceMax/2))
-                    print("indietro")
-                    indietro(5)
-
-                elif distanceMax==novanta:
-                    direzione="avanti"
-                    spostamentoY=spostamentoY+(int(distanceMax/2))
-                    print("destra")
-                    destra(5)
-
-                elif distanceMax==centoottanta:
-                    direzione="avanti"
                     spostamentoY=spostamentoY-(int(distanceMax/2))
+                    print("indietro")
+                    indietro(movimento)
+
+                elif distanceMax==Serial.read0 or distanceMax2==Serial.read0:
+                    direzione="avanti"
+                    giro=giro-1.5708
+
+                    if distanceMax2==Serial.read0:
+                        movimento=((distanceMax2*0.5)/12)
+                        spostamentoX=spostamentoX+(int(distanceMax2/2))
+                    else:
+                        spostamentoX=spostamentoX+(int(distanceMax/2))
+
+                    print("destra")
+                    destra(movimento)
+
+                elif distanceMax==Serial.read1 or distanceMax2==Serial.read1:
+                    direzione="avanti"
+                    giro=giro+1.5708
+
+                    if distanceMax2==Serial.read1:
+                        movimento=((distanceMax2*0.5)/12)
+                        spostamentoX=spostamentoX-(int(distanceMax2/2))
+                    else:
+                        spostamentoX=spostamentoX-(int(distanceMax/2))
+
                     print("sinistra")
-                    sinistra(5)
+                    sinistra(movimento)
 
 
 

@@ -5,7 +5,7 @@
 #define ECHO_PIN0  7
 #define TRIGGER_PIN1  6
 #define ECHO_PIN1  8
-#define MAX_DISTANCE  100
+#define MAX_DISTANCE  200
 
 
 int laser = 10;
@@ -51,7 +51,7 @@ while(angolo<180)
    servomotore.write(angolo);
    sensori();
    Mappa();
-   delay(500);
+   delay(50);
   
 }
 Serial.end();
@@ -72,17 +72,17 @@ void sensori(){
    Distance1 = sonar1.convert_cm(Mseconds1);
     while (Distance0 == 0)
  {
-   Distance0 = 101;
+   Distance0 = 199;
   }
   while (Distance1 == 0)
  {
-   Distance1 = 101;
+   Distance1 = 199;
   }
 }
 void Blink(){
   digitalWrite(laser, HIGH);
-  delay(500);
+  delay(100);
   digitalWrite(laser, LOW);
-  delay(500);
+  delay(100);
   
   }
