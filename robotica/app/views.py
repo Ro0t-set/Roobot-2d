@@ -77,7 +77,7 @@ def grafici (request):
         mappaCancella.delete()
 
     if 'stop' in request.POST :
-<<<<<<< HEAD
+
         stop=Nome.objects.get(id= idMappa)
         stop.stop=True
         stop.save()
@@ -85,14 +85,14 @@ def grafici (request):
 
     if 'inizza_mappatura' in request.POST :
             stop=Nome.objects.get(id= idMappa)
-=======
+
         stop.stop=True
         stop.save()
         print(stop.stop)
 
 
     if 'inizza_mappatura' in request.POST :
->>>>>>> 29d230175dcd616d9550f7db7aaf378d08c39959
+
             stop.stop=False
             stop.save()
             #MovimentoLib = importlib.reload(avanti, indietro, destra, sinistra)
@@ -113,7 +113,7 @@ def grafici (request):
                     stop.save()
                 r=r+1
 
-<<<<<<< HEAD
+
                 stop=Nome.objects.get(id= idMappa)
                 if stop.stop:
                     break
@@ -124,13 +124,6 @@ def grafici (request):
                 print ("(",r,")")
 
 
-
-=======
-                print ("(",r,")")
-
->>>>>>> 29d230175dcd616d9550f7db7aaf378d08c39959
-                Reload = importlib.reload(Serial)
-
                 Rad180=math.pi
                 a=0
                 angle = 0
@@ -138,12 +131,7 @@ def grafici (request):
 
 
                 while a<rivelazioni:
-<<<<<<< HEAD
 
-=======
-                    if stop.stop:
-                        break
->>>>>>> 29d230175dcd616d9550f7db7aaf378d08c39959
                     a=str(a)
                     distance="read"+a
                     distance="Serial."+distance
@@ -184,14 +172,6 @@ def grafici (request):
                     break
                     stop.stop=False
                     stop.save()
-
-
-                #if distanceMax < 50 or distanceMax2 < 50:
-                 #   break
-                #if distanceMax2 > 100:
-                 #   distanceMax2=100
-                #if distanceMax > 100:
-                 #   distanceMax=100
 
 
 
